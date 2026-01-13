@@ -1,0 +1,3366 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biochemie - Fette, Kohlenhydrate & Proteine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ===== CSS Variables ===== */
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #111720;
+            --bg-tertiary: #1a2332;
+            --bg-card: #151d2a;
+            
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            
+            --accent-orange: #f59e0b;
+            --accent-orange-dim: rgba(245, 158, 11, 0.15);
+            --accent-cyan: #06b6d4;
+            --accent-cyan-dim: rgba(6, 182, 212, 0.15);
+            --accent-magenta: #d946ef;
+            --accent-magenta-dim: rgba(217, 70, 239, 0.15);
+            --accent-green: #22c55e;
+            --accent-green-dim: rgba(34, 197, 94, 0.15);
+            --accent-blue: #3b82f6;
+            --accent-blue-dim: rgba(59, 130, 246, 0.15);
+            --accent-red: #ef4444;
+            --accent-red-dim: rgba(239, 68, 68, 0.15);
+            
+            --border-color: #2d3748;
+            --gradient-mesh: radial-gradient(at 20% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
+                            radial-gradient(at 80% 20%, rgba(217, 70, 239, 0.08) 0%, transparent 50%),
+                            radial-gradient(at 40% 40%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+            
+            --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            
+            --shadow-glow: 0 0 60px -20px;
+            --transition-fast: 0.2s ease;
+            --transition-medium: 0.4s ease;
+        }
+
+        /* ===== Reset & Base ===== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-mesh);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===== Typography ===== */
+        h1, h2, h3, h4 {
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: clamp(1.3rem, 3vw, 1.6rem);
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        code, .mono {
+            font-family: var(--font-mono);
+            background: var(--bg-tertiary);
+            padding: 0.2em 0.5em;
+            border-radius: var(--radius-sm);
+            font-size: 0.9em;
+        }
+
+        /* ===== Navigation ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 14, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius-md);
+            transition: var(--transition-fast);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .nav-links a[data-section="basics"] { --nav-accent: var(--accent-green); }
+        .nav-links a[data-section="fette"] { --nav-accent: var(--accent-orange); }
+        .nav-links a[data-section="kohlenhydrate"] { --nav-accent: var(--accent-cyan); }
+        .nav-links a[data-section="proteine"] { --nav-accent: var(--accent-magenta); }
+        .nav-links a[data-section="zusammenfassung"] { --nav-accent: var(--accent-blue); }
+
+        .nav-links a:hover {
+            color: var(--nav-accent);
+        }
+
+        /* ===== Main Layout ===== */
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 6rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 80px;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-badge span {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .hero h1 {
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-gradient-text {
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-magenta) 50%, var(--accent-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+            margin-bottom: 3rem;
+        }
+
+        .hero-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            width: 100%;
+            max-width: 900px;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+
+        .hero-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: left;
+            transition: var(--transition-medium);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .hero-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--card-accent);
+            box-shadow: var(--shadow-glow) var(--card-accent);
+        }
+
+        .hero-card[data-topic="basics"] { --card-accent: var(--accent-green); }
+        .hero-card[data-topic="fette"] { --card-accent: var(--accent-orange); }
+        .hero-card[data-topic="kohlenhydrate"] { --card-accent: var(--accent-cyan); }
+        .hero-card[data-topic="proteine"] { --card-accent: var(--accent-magenta); }
+
+        .hero-card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-card[data-topic="basics"] .hero-card-icon { background: var(--accent-green-dim); }
+        .hero-card[data-topic="fette"] .hero-card-icon { background: var(--accent-orange-dim); }
+        .hero-card[data-topic="kohlenhydrate"] .hero-card-icon { background: var(--accent-cyan-dim); }
+        .hero-card[data-topic="proteine"] .hero-card-icon { background: var(--accent-magenta-dim); }
+
+        .hero-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--card-accent);
+        }
+
+        .hero-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== Section Headers ===== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .section-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        #basics .section-icon { background: var(--accent-green-dim); }
+        #fette .section-icon { background: var(--accent-orange-dim); }
+        #kohlenhydrate .section-icon { background: var(--accent-cyan-dim); }
+        #proteine .section-icon { background: var(--accent-magenta-dim); }
+
+        .section-title-group h2 {
+            margin-bottom: 0.25rem;
+        }
+
+        #basics .section-title-group h2 { color: var(--accent-green); }
+        #fette .section-title-group h2 { color: var(--accent-orange); }
+        #kohlenhydrate .section-title-group h2 { color: var(--accent-cyan); }
+        #proteine .section-title-group h2 { color: var(--accent-magenta); }
+
+        .section-title-group p {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== Content Cards ===== */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            transition: var(--transition-medium);
+        }
+
+        .card:hover {
+            border-color: var(--border-color);
+            transform: translateY(-2px);
+        }
+
+        .card h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        /* ===== Formula Displays ===== */
+        .formula-box {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-family: var(--font-mono);
+            overflow-x: auto;
+        }
+
+        .formula-box pre {
+            margin: 0;
+            white-space: pre;
+            line-height: 1.4;
+        }
+
+        .formula-highlight {
+            color: var(--accent-cyan);
+        }
+
+        .formula-arrow {
+            color: var(--accent-orange);
+            font-weight: bold;
+        }
+
+        /* ===== Reaction Display ===== */
+        .reaction {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 2rem;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            margin: 1.5rem 0;
+        }
+
+        .reaction-part {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .reaction-molecule {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            padding: 0.75rem 1.25rem;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .reaction-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .reaction-arrow {
+            font-size: 2rem;
+            color: var(--accent-cyan);
+            animation: arrowPulse 2s infinite;
+        }
+
+        .reaction-plus {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== Tables ===== */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .table-mono {
+            font-family: var(--font-mono);
+        }
+
+        /* ===== Info Boxes ===== */
+        .info-box {
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            margin: 1.5rem 0;
+            border-left: 4px solid;
+        }
+
+        .info-box.tip {
+            background: var(--accent-green-dim);
+            border-color: var(--accent-green);
+        }
+
+        .info-box.warning {
+            background: var(--accent-orange-dim);
+            border-color: var(--accent-orange);
+        }
+
+        .info-box.info {
+            background: var(--accent-blue-dim);
+            border-color: var(--accent-blue);
+        }
+
+        .info-box-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-box.tip .info-box-title { color: var(--accent-green); }
+        .info-box.warning .info-box-title { color: var(--accent-orange); }
+        .info-box.info .info-box-title { color: var(--accent-blue); }
+
+        /* ===== Animated SVG Styles ===== */
+        .svg-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-lg);
+            margin: 1.5rem 0;
+        }
+
+        .svg-container svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* ===== Writing Styles Demo ===== */
+        .writing-styles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .writing-style-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .writing-style-card h4 {
+            color: var(--accent-green);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .writing-style-card .formula-box {
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== Animations ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes arrowPulse {
+            0%, 100% { transform: translateX(0); opacity: 1; }
+            50% { transform: translateX(5px); opacity: 0.7; }
+        }
+
+        @keyframes draw {
+            to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== Subscript/Superscript ===== */
+        sub, sup {
+            font-size: 0.7em;
+            line-height: 0;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 900px) {
+            .hero-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            section {
+                padding: 4rem 0;
+            }
+            
+            main {
+                padding: 0 1rem;
+            }
+        }
+
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-color);
+        }
+
+        /* ===== Step indicators ===== */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .step {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-green-dim);
+            color: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .step-content p {
+            font-size: 0.95rem;
+        }
+
+        /* ===== Subsections ===== */
+        .subsection {
+            margin: 3rem 0;
+        }
+
+        .subsection-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .subsection-number {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">⚗️ Biochemie</div>
+            <ul class="nav-links">
+                <li><a href="#basics" data-section="basics">Grundlagen</a></li>
+                <li><a href="#fette" data-section="fette">Fette</a></li>
+                <li><a href="#kohlenhydrate" data-section="kohlenhydrate">Kohlenhydrate</a></li>
+                <li><a href="#proteine" data-section="proteine">Proteine</a></li>
+                <li><a href="#zusammenfassung" data-section="zusammenfassung">Übersicht</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-badge">
+                <span></span>
+                Stoffsammlung Sekundarstufe II
+            </div>
+            <h1>
+                <span class="hero-gradient-text">Biochemie</span><br>
+                Fette, Kohlenhydrate & Proteine
+            </h1>
+            <p>
+                Eine umfassende Übersicht über die wichtigsten Biomoleküle, 
+                ihre Strukturen, Reaktionen und Nachweisverfahren.
+            </p>
+            <div class="hero-cards">
+                <a href="#basics" class="hero-card" data-topic="basics">
+                    <div class="hero-card-icon">⚛️</div>
+                    <h3>Chemie-Basics</h3>
+                    <p>Reaktionsgleichungen, Schreibweisen & Bindungen</p>
+                </a>
+                <a href="#fette" class="hero-card" data-topic="fette">
+                    <div class="hero-card-icon">🧈</div>
+                    <h3>Fette</h3>
+                    <p>Aufbau, Veresterung & Verseifung</p>
+                </a>
+                <a href="#kohlenhydrate" class="hero-card" data-topic="kohlenhydrate">
+                    <div class="hero-card-icon">🍬</div>
+                    <h3>Kohlenhydrate</h3>
+                    <p>Mono-, Di- & Polysaccharide</p>
+                </a>
+                <a href="#proteine" class="hero-card" data-topic="proteine">
+                    <div class="hero-card-icon">🧬</div>
+                    <h3>Proteine</h3>
+                    <p>Aminosäuren & Peptidbindung</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Section 1: Chemie-Grundlagen -->
+        <section id="basics">
+            <div class="section-header animate-on-scroll">
+                <div class="section-icon">⚛️</div>
+                <div class="section-title-group">
+                    <h2>Chemie-Grundlagen</h2>
+                    <p>Reaktionsgleichungen, Schreibweisen und Bindungsarten</p>
+                </div>
+            </div>
+
+            <!-- 1.1 Schreibweisen -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">1.1</span>
+                    Schreibweisen chemischer Verbindungen
+                </h3>
+
+                <div class="writing-styles-grid">
+                    <div class="writing-style-card">
+                        <h4>Summenformel</h4>
+                        <div class="formula-box">
+                            <span style="font-size: 1.3rem;">C<sub>6</sub>H<sub>12</sub>O<sub>6</sub></span>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Art und Anzahl der Atome</p>
+                    </div>
+                    
+                    <div class="writing-style-card">
+                        <h4>Halbstrukturformel</h4>
+                        <div class="formula-box">
+                            <span style="font-size: 1.1rem;">CH<sub>3</sub>-CH<sub>2</sub>-OH</span>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Kompromiss mit Bindungen</p>
+                    </div>
+                    
+                    <div class="writing-style-card">
+                        <h4>Strukturformel</h4>
+                        <div class="formula-box">
+<pre style="font-size: 0.85rem; line-height: 1.2;">    H   H
+    |   |
+H - C - C - O - H
+    |   |
+    H   H</pre>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Alle Bindungen sichtbar</p>
+                    </div>
+                    
+                    <div class="writing-style-card">
+                        <h4>Skelettformel</h4>
+                        <div class="formula-box">
+                            <!-- SVG Skelettformel Ethanol -->
+                            <svg width="80" height="50" viewBox="0 0 80 50">
+                                <line x1="10" y1="35" x2="40" y2="20" stroke="var(--text-primary)" stroke-width="2"/>
+                                <line x1="40" y1="20" x2="70" y2="35" stroke="var(--text-primary)" stroke-width="2"/>
+                                <text x="70" y="40" fill="var(--accent-red)" font-family="var(--font-mono)" font-size="14">OH</text>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Vereinfacht, C/H impliziert</p>
+                    </div>
+                </div>
+
+                <div class="info-box tip">
+                    <div class="info-box-title">💡 Merke</div>
+                    <p>In Skelettformeln werden C-Atome an Ecken/Enden impliziert und H-Atome an Kohlenstoff weggelassen. Heteroatome (O, N, S) werden immer ausgeschrieben!</p>
+                </div>
+            </div>
+
+            <!-- 1.2 Reaktionsgleichungen -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">1.2</span>
+                    Aufbau chemischer Reaktionsgleichungen
+                </h3>
+
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <h3>Grundprinzip</h3>
+                    <p style="margin-bottom: 1rem;">Eine Reaktionsgleichung beschreibt die Umwandlung von <strong style="color: var(--accent-cyan);">Edukten</strong> zu <strong style="color: var(--accent-magenta);">Produkten</strong>.</p>
+                    
+                    <div class="reaction">
+                        <div class="reaction-part">
+                            <div class="reaction-molecule" style="border-color: var(--accent-cyan);">Edukt₁</div>
+                        </div>
+                        <span class="reaction-plus">+</span>
+                        <div class="reaction-part">
+                            <div class="reaction-molecule" style="border-color: var(--accent-cyan);">Edukt₂</div>
+                        </div>
+                        <span class="reaction-arrow">→</span>
+                        <div class="reaction-part">
+                            <div class="reaction-molecule" style="border-color: var(--accent-magenta);">Produkt₁</div>
+                        </div>
+                        <span class="reaction-plus">+</span>
+                        <div class="reaction-part">
+                            <div class="reaction-molecule" style="border-color: var(--accent-magenta);">Produkt₂</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Bedeutung</th>
+                                <th>Beispiel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-mono">→</td>
+                                <td>Reaktionspfeil (Hinreaktion)</td>
+                                <td class="table-mono">A + B → C</td>
+                            </tr>
+                            <tr>
+                                <td class="table-mono">⇌</td>
+                                <td>Gleichgewichtspfeil (reversibel)</td>
+                                <td class="table-mono">A + B ⇌ C + D</td>
+                            </tr>
+                            <tr>
+                                <td class="table-mono">↑</td>
+                                <td>Entweichendes Gas</td>
+                                <td class="table-mono">CO₂↑</td>
+                            </tr>
+                            <tr>
+                                <td class="table-mono">↓</td>
+                                <td>Niederschlag (Fällung)</td>
+                                <td class="table-mono">AgCl↓</td>
+                            </tr>
+                            <tr>
+                                <td class="table-mono">(s), (l), (g), (aq)</td>
+                                <td>Aggregatzustand / gelöst</td>
+                                <td class="table-mono">H₂O(l), NaCl(aq)</td>
+                            </tr>
+                            <tr>
+                                <td class="table-mono">Δ</td>
+                                <td>Wärmezufuhr</td>
+                                <td class="table-mono">→ mit Δ darüber</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 1.3 Stöchiometrie -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">1.3</span>
+                    Stöchiometrie – Ausgleichen von Gleichungen
+                </h3>
+
+                <div class="info-box info">
+                    <div class="info-box-title">📚 Gesetz der Erhaltung der Masse (Lavoisier)</div>
+                    <p>Bei chemischen Reaktionen bleibt die Gesamtmasse konstant. Die Anzahl der Atome jedes Elements muss auf beiden Seiten der Gleichung gleich sein!</p>
+                </div>
+
+                <div class="card">
+                    <h3>Beispiel: Verbrennung von Methan</h3>
+                    
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Rohgleichung aufstellen</h4>
+                                <div class="formula-box">
+                                    <code>CH₄ + O₂ → CO₂ + H₂O</code>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Atome zählen</h4>
+                                <div class="table-wrapper" style="margin: 0.5rem 0;">
+                                    <table>
+                                        <thead>
+                                            <tr><th>Element</th><th>Links</th><th>Rechts</th><th>Status</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td>C</td><td>1</td><td>1</td><td style="color: var(--accent-green);">✓</td></tr>
+                                            <tr><td>H</td><td>4</td><td>2</td><td style="color: var(--accent-red);">✗</td></tr>
+                                            <tr><td>O</td><td>2</td><td>3</td><td style="color: var(--accent-red);">✗</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Koeffizienten anpassen</h4>
+                                <div class="formula-box">
+                                    <code><span style="color: var(--accent-orange);">1</span> CH₄ + <span style="color: var(--accent-orange);">2</span> O₂ → <span style="color: var(--accent-orange);">1</span> CO₂ + <span style="color: var(--accent-orange);">2</span> H₂O</code>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Kontrolle</h4>
+                                <div class="table-wrapper" style="margin: 0.5rem 0;">
+                                    <table>
+                                        <thead>
+                                            <tr><th>Element</th><th>Links</th><th>Rechts</th><th>Status</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td>C</td><td>1</td><td>1</td><td style="color: var(--accent-green);">✓</td></tr>
+                                            <tr><td>H</td><td>4</td><td>4</td><td style="color: var(--accent-green);">✓</td></tr>
+                                            <tr><td>O</td><td>4</td><td>4</td><td style="color: var(--accent-green);">✓</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box warning">
+                        <div class="info-box-title">⚠️ Wichtig</div>
+                        <p>Nur <strong>Koeffizienten</strong> (Zahlen vor der Formel) dürfen geändert werden – niemals die <strong>Indizes</strong> (tiefgestellte Zahlen in der Formel)!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.4 Reaktionstypen -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">1.4</span>
+                    Reaktionstypen
+                </h3>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <h3>
+                            Synthese
+                            <span class="card-badge" style="background: var(--accent-green-dim); color: var(--accent-green);">Aufbau</span>
+                        </h3>
+                        <p>Zwei oder mehr Stoffe vereinigen sich zu einem neuen Stoff.</p>
+                        <div class="formula-box">
+                            <code>A + B → AB</code>
+                        </div>
+                        <div class="reaction" style="padding: 1rem;">
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">2 H₂</div>
+                            <span class="reaction-plus">+</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">O₂</div>
+                            <span class="reaction-arrow">→</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">2 H₂O</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>
+                            Analyse
+                            <span class="card-badge" style="background: var(--accent-red-dim); color: var(--accent-red);">Zerlegung</span>
+                        </h3>
+                        <p>Ein Stoff wird in einfachere Bestandteile zerlegt.</p>
+                        <div class="formula-box">
+                            <code>AB → A + B</code>
+                        </div>
+                        <div class="reaction" style="padding: 1rem;">
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">2 H₂O</div>
+                            <span class="reaction-arrow">→</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">2 H₂</div>
+                            <span class="reaction-plus">+</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">O₂</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>
+                            Umsetzung
+                            <span class="card-badge" style="background: var(--accent-cyan-dim); color: var(--accent-cyan);">Austausch</span>
+                        </h3>
+                        <p>Atome oder Atomgruppen werden zwischen Molekülen ausgetauscht.</p>
+                        <div class="formula-box">
+                            <code>AB + CD → AD + CB</code>
+                        </div>
+                        <div class="reaction" style="padding: 1rem; font-size: 0.85rem;">
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">NaCl</div>
+                            <span class="reaction-plus">+</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">AgNO₃</div>
+                            <span class="reaction-arrow">→</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">AgCl↓</div>
+                            <span class="reaction-plus">+</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">NaNO₃</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>
+                            Redoxreaktion
+                            <span class="card-badge" style="background: var(--accent-magenta-dim); color: var(--accent-magenta);">Elektronentransfer</span>
+                        </h3>
+                        <p>Elektronenübertragung zwischen Reaktionspartnern.</p>
+                        <div class="formula-box">
+<pre style="font-size: 0.85rem;">Oxidation: Zn → Zn²⁺ + 2e⁻
+Reduktion: Cu²⁺ + 2e⁻ → Cu
+─────────────────────────────
+Gesamt:    Zn + Cu²⁺ → Zn²⁺ + Cu</pre>
+                        </div>
+                        <div class="info-box tip" style="margin: 0.5rem 0 0 0; padding: 1rem;">
+                            <p style="margin: 0; font-size: 0.9rem;"><strong>Merksatz "OMA":</strong> <span style="color: var(--accent-orange);">O</span>xidation = <span style="color: var(--accent-orange);">M</span>inus (<span style="color: var(--accent-orange);">A</span>bgabe)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.5 Bindungsarten -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">1.5</span>
+                    Bindungsarten
+                </h3>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <h3>Kovalente Bindung</h3>
+                        <p><strong>Elektronenpaarbindung</strong> zwischen Nichtmetallen</p>
+                        <ul style="margin-top: 1rem; padding-left: 1.5rem; color: var(--text-secondary);">
+                            <li>Elektronen werden <strong>geteilt</strong></li>
+                            <li>Beispiele: H₂, O₂, CH₄, H₂O</li>
+                        </ul>
+                        <div class="svg-container" style="padding: 1rem;">
+                            <svg width="120" height="60" viewBox="0 0 120 60">
+                                <!-- H atom 1 -->
+                                <circle cx="30" cy="30" r="20" fill="none" stroke="var(--accent-cyan)" stroke-width="2"/>
+                                <text x="30" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="16" font-weight="bold">H</text>
+                                <!-- Shared electrons -->
+                                <circle cx="55" cy="25" r="4" fill="var(--accent-orange)">
+                                    <animate attributeName="cx" values="55;65;55" dur="2s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle cx="65" cy="35" r="4" fill="var(--accent-orange)">
+                                    <animate attributeName="cx" values="65;55;65" dur="2s" repeatCount="indefinite"/>
+                                </circle>
+                                <!-- H atom 2 -->
+                                <circle cx="90" cy="30" r="20" fill="none" stroke="var(--accent-cyan)" stroke-width="2"/>
+                                <text x="90" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="16" font-weight="bold">H</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Ionenbindung</h3>
+                        <p>Zwischen <strong>Metallen</strong> und <strong>Nichtmetallen</strong></p>
+                        <ul style="margin-top: 1rem; padding-left: 1.5rem; color: var(--text-secondary);">
+                            <li>Elektronen werden <strong>übertragen</strong></li>
+                            <li>Elektrostatische Anziehung</li>
+                            <li>Beispiele: NaCl, CaCO₃</li>
+                        </ul>
+                        <div class="svg-container" style="padding: 1rem;">
+                            <svg width="140" height="60" viewBox="0 0 140 60">
+                                <!-- Na+ -->
+                                <circle cx="35" cy="30" r="22" fill="var(--accent-cyan-dim)" stroke="var(--accent-cyan)" stroke-width="2"/>
+                                <text x="35" y="35" text-anchor="middle" fill="var(--accent-cyan)" font-size="14" font-weight="bold">Na⁺</text>
+                                <!-- Attraction line -->
+                                <line x1="57" y1="30" x2="83" y2="30" stroke="var(--text-muted)" stroke-width="2" stroke-dasharray="4,4">
+                                    <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite"/>
+                                </line>
+                                <!-- Cl- -->
+                                <circle cx="105" cy="30" r="22" fill="var(--accent-green-dim)" stroke="var(--accent-green)" stroke-width="2"/>
+                                <text x="105" y="35" text-anchor="middle" fill="var(--accent-green)" font-size="14" font-weight="bold">Cl⁻</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Wasserstoffbrücken</h3>
+                        <p>Schwache <strong>intermolekulare</strong> Wechselwirkung</p>
+                        <ul style="margin-top: 1rem; padding-left: 1.5rem; color: var(--text-secondary);">
+                            <li>H an F, O oder N gebunden</li>
+                            <li>Wichtig für: Wasser, Proteine, DNA</li>
+                        </ul>
+                        <div class="svg-container" style="padding: 1rem;">
+                            <svg width="200" height="70" viewBox="0 0 200 70">
+                                <!-- Water molecule 1 -->
+                                <circle cx="40" cy="35" r="12" fill="var(--accent-red-dim)" stroke="var(--accent-red)" stroke-width="2"/>
+                                <text x="40" y="40" text-anchor="middle" fill="var(--text-primary)" font-size="12" font-weight="bold">O</text>
+                                <text x="40" y="18" text-anchor="middle" fill="var(--text-muted)" font-size="10">δ⁻</text>
+                                <line x1="28" y1="45" x2="18" y2="55" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="12" y="65" fill="var(--text-primary)" font-size="11">H</text>
+                                <text x="22" y="58" fill="var(--text-muted)" font-size="9">δ⁺</text>
+                                <line x1="52" y1="45" x2="62" y2="55" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="65" y="65" fill="var(--text-primary)" font-size="11">H</text>
+                                <text x="55" y="58" fill="var(--text-muted)" font-size="9">δ⁺</text>
+                                
+                                <!-- H-Bridge -->
+                                <line x1="70" y1="35" x2="110" y2="35" stroke="var(--accent-cyan)" stroke-width="2" stroke-dasharray="6,3">
+                                    <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
+                                </line>
+                                <text x="90" y="25" text-anchor="middle" fill="var(--accent-cyan)" font-size="10">H-Brücke</text>
+                                
+                                <!-- Water molecule 2 -->
+                                <circle cx="160" cy="35" r="12" fill="var(--accent-red-dim)" stroke="var(--accent-red)" stroke-width="2"/>
+                                <text x="160" y="40" text-anchor="middle" fill="var(--text-primary)" font-size="12" font-weight="bold">O</text>
+                                <text x="160" y="18" text-anchor="middle" fill="var(--text-muted)" font-size="10">δ⁻</text>
+                                <line x1="148" y1="45" x2="138" y2="55" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="132" y="65" fill="var(--text-primary)" font-size="11">H</text>
+                                <line x1="172" y1="45" x2="182" y2="55" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="185" y="65" fill="var(--text-primary)" font-size="11">H</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Van-der-Waals-Kräfte</h3>
+                        <p><strong>Schwächste</strong> intermolekulare Wechselwirkung</p>
+                        <ul style="margin-top: 1rem; padding-left: 1.5rem; color: var(--text-secondary);">
+                            <li>Temporäre Dipole</li>
+                            <li>Wichtig bei unpolaren Molekülen</li>
+                            <li>Beispiel: Fette, Edelgase</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1.6 Funktionelle Gruppen -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">1.6</span>
+                    Funktionelle Gruppen in der Biochemie
+                </h3>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Gruppe</th>
+                                <th>Name</th>
+                                <th>Formel</th>
+                                <th>Vorkommen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="table-mono" style="color: var(--accent-red);">-OH</td>
+                                <td>Hydroxyl</td>
+                                <td class="table-mono">R-OH</td>
+                                <td>Alkohole, Kohlenhydrate</td>
+                            </tr>
+                            <tr>
+                                <td class="table-mono" style="color: var(--accent-cyan);">-CHO</td>
+                                <td>Aldehyd</td>
+                                <td class="table-mono">R-CHO</td>
+                                <td>Aldosen (Glucose)</td>
+                            </tr>
+                            <tr>
+                                <td class="table-mono" style="color: var(--accent-cyan);">>C=O</td>
+                                <td>Keto</td>
+                                <td class="table-mono">R-CO-R'</td>
+                                <td>Ketosen (Fructose)</td>
+                            </tr>
+                            <tr>
+                                <td class="table-mono" style="color: var(--accent-orange);">-COOH</td>
+                                <td>Carboxyl</td>
+                                <td class="table-mono">R-COOH</td>
+                                <td>Fettsäuren, Aminosäuren</td>
+                            </tr>
+                            <tr>
+                                <td class="table-mono" style="color: var(--accent-blue);">-NH₂</td>
+                                <td>Amino</td>
+                                <td class="table-mono">R-NH₂</td>
+                                <td>Aminosäuren</td>
+                            </tr>
+                            <tr>
+                                <td class="table-mono" style="color: var(--accent-magenta);">-CO-NH-</td>
+                                <td>Amid/Peptid</td>
+                                <td class="table-mono">R-CO-NH-R'</td>
+                                <td>Proteine</td>
+                            </tr>
+                            <tr>
+                                <td class="table-mono" style="color: var(--accent-green);">-COO-</td>
+                                <td>Ester</td>
+                                <td class="table-mono">R-COO-R'</td>
+                                <td>Fette</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- PLACEHOLDER für Fette, Kohlenhydrate, Proteine Sektionen -->
+        <section id="fette">
+            <div class="section-header animate-on-scroll">
+                <div class="section-icon">🧈</div>
+                <div class="section-title-group">
+                    <h2>Fette (Lipide)</h2>
+                    <p>Aufbau, Eigenschaften und Reaktionen</p>
+                </div>
+            </div>
+
+            <!-- 2.1 Definition -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">2.1</span>
+                    Definition und Eigenschaften
+                </h3>
+
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <h3>Was sind Fette?</h3>
+                    <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                        <strong style="color: var(--accent-orange);">Fette</strong> sind Ester des dreiwertigen Alkohols 
+                        <strong>Glycerin</strong> mit <strong>Fettsäuren</strong> (langkettige Carbonsäuren).
+                    </p>
+                    
+                    <div class="content-grid" style="margin-top: 1.5rem;">
+                        <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md);">
+                            <h4 style="color: var(--accent-orange); margin-bottom: 0.5rem;">Physikalische Eigenschaften</h4>
+                            <ul style="padding-left: 1.2rem; color: var(--text-secondary); font-size: 0.95rem;">
+                                <li>Hydrophob (wasserabweisend)</li>
+                                <li>Lipophil (fettliebend)</li>
+                                <li>Geringere Dichte als Wasser</li>
+                                <li>Löslich in organischen Lösungsmitteln</li>
+                            </ul>
+                        </div>
+                        <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md);">
+                            <h4 style="color: var(--accent-orange); margin-bottom: 0.5rem;">Biologische Bedeutung</h4>
+                            <ul style="padding-left: 1.2rem; color: var(--text-secondary); font-size: 0.95rem;">
+                                <li>Energiespeicher (39 kJ/g)</li>
+                                <li>Wärmeisolation</li>
+                                <li>Organschutz</li>
+                                <li>Membranaufbau</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.2 Aufbau -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">2.2</span>
+                    Aufbau der Fette
+                </h3>
+
+                <div class="content-grid">
+                    <!-- Glycerin -->
+                    <div class="card">
+                        <h3>Glycerin (Propan-1,2,3-triol)</h3>
+                        <p>Dreiwertiger Alkohol mit drei OH-Gruppen</p>
+                        
+                        <div class="svg-container">
+                            <svg width="200" height="180" viewBox="0 0 200 180">
+                                <!-- Glycerin backbone -->
+                                <g transform="translate(60, 20)">
+                                    <!-- C1 -->
+                                    <circle cx="20" cy="30" r="18" fill="var(--bg-card)" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    <text x="20" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="14" font-weight="bold">C</text>
+                                    <text x="20" y="8" text-anchor="middle" fill="var(--text-muted)" font-size="10">1</text>
+                                    
+                                    <!-- C1-H bonds -->
+                                    <line x1="2" y1="20" x2="-15" y2="10" stroke="var(--text-muted)" stroke-width="2"/>
+                                    <text x="-20" y="10" fill="var(--text-muted)" font-size="12">H</text>
+                                    <line x1="2" y1="40" x2="-15" y2="50" stroke="var(--text-muted)" stroke-width="2"/>
+                                    <text x="-20" y="55" fill="var(--text-muted)" font-size="12">H</text>
+                                    
+                                    <!-- C1-OH -->
+                                    <line x1="38" y1="30" x2="65" y2="30" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    <text x="80" y="35" fill="var(--accent-red)" font-size="14" font-weight="bold">OH</text>
+                                    
+                                    <!-- C1-C2 bond -->
+                                    <line x1="20" y1="48" x2="20" y2="72" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    
+                                    <!-- C2 -->
+                                    <circle cx="20" cy="90" r="18" fill="var(--bg-card)" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    <text x="20" y="95" text-anchor="middle" fill="var(--text-primary)" font-size="14" font-weight="bold">C</text>
+                                    <text x="20" y="68" text-anchor="middle" fill="var(--text-muted)" font-size="10">2</text>
+                                    
+                                    <!-- C2-H bond -->
+                                    <line x1="2" y1="90" x2="-15" y2="90" stroke="var(--text-muted)" stroke-width="2"/>
+                                    <text x="-20" y="95" fill="var(--text-muted)" font-size="12">H</text>
+                                    
+                                    <!-- C2-OH -->
+                                    <line x1="38" y1="90" x2="65" y2="90" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    <text x="80" y="95" fill="var(--accent-red)" font-size="14" font-weight="bold">OH</text>
+                                    
+                                    <!-- C2-C3 bond -->
+                                    <line x1="20" y1="108" x2="20" y2="132" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    
+                                    <!-- C3 -->
+                                    <circle cx="20" cy="150" r="18" fill="var(--bg-card)" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    <text x="20" y="155" text-anchor="middle" fill="var(--text-primary)" font-size="14" font-weight="bold">C</text>
+                                    <text x="20" y="128" text-anchor="middle" fill="var(--text-muted)" font-size="10">3</text>
+                                    
+                                    <!-- C3-H bonds -->
+                                    <line x1="2" y1="140" x2="-15" y2="130" stroke="var(--text-muted)" stroke-width="2"/>
+                                    <text x="-20" y="130" fill="var(--text-muted)" font-size="12">H</text>
+                                    <line x1="2" y1="160" x2="-15" y2="170" stroke="var(--text-muted)" stroke-width="2"/>
+                                    <text x="-20" y="175" fill="var(--text-muted)" font-size="12">H</text>
+                                    
+                                    <!-- C3-OH -->
+                                    <line x1="38" y1="150" x2="65" y2="150" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    <text x="80" y="155" fill="var(--accent-red)" font-size="14" font-weight="bold">OH</text>
+                                </g>
+                            </svg>
+                        </div>
+                        
+                        <div class="formula-box" style="text-align: center;">
+                            <span style="font-size: 1.2rem;">C<sub>3</sub>H<sub>8</sub>O<sub>3</sub></span>
+                        </div>
+                    </div>
+
+                    <!-- Fettsäuren -->
+                    <div class="card">
+                        <h3>Fettsäuren</h3>
+                        <p>Langkettige Monocarbonsäuren (meist 12-24 C-Atome)</p>
+                        
+                        <div class="svg-container">
+                            <svg width="280" height="80" viewBox="0 0 280 80">
+                                <!-- Carboxyl group -->
+                                <g transform="translate(10, 20)">
+                                    <!-- Double bond O -->
+                                    <line x1="30" y1="10" x2="50" y2="0" stroke="var(--accent-red)" stroke-width="2"/>
+                                    <line x1="30" y1="15" x2="50" y2="5" stroke="var(--accent-red)" stroke-width="2"/>
+                                    <text x="55" y="8" fill="var(--accent-red)" font-size="14" font-weight="bold">O</text>
+                                    
+                                    <!-- C of COOH -->
+                                    <circle cx="30" cy="30" r="12" fill="var(--bg-card)" stroke="var(--accent-orange)" stroke-width="2"/>
+                                    <text x="30" y="35" text-anchor="middle" fill="var(--text-primary)" font-size="12" font-weight="bold">C</text>
+                                    
+                                    <!-- OH -->
+                                    <line x1="42" y1="30" x2="60" y2="30" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    <text x="70" y="35" fill="var(--accent-red)" font-size="14" font-weight="bold">OH</text>
+                                </g>
+                                
+                                <!-- Chain -->
+                                <line x1="28" y1="50" x2="15" y2="50" stroke="var(--text-secondary)" stroke-width="2"/>
+                                
+                                <!-- CH2 groups -->
+                                <g transform="translate(100, 35)">
+                                    <text x="0" y="20" fill="var(--text-secondary)" font-size="12">—CH₂—CH₂—CH₂— ... —CH₂—</text>
+                                </g>
+                                
+                                <!-- CH3 end -->
+                                <text x="245" y="55" fill="var(--text-primary)" font-size="14" font-weight="bold">CH₃</text>
+                                
+                                <!-- Label -->
+                                <text x="140" y="75" text-anchor="middle" fill="var(--text-muted)" font-size="11">Kohlenstoffkette</text>
+                            </svg>
+                        </div>
+                        
+                        <div class="info-box tip" style="margin-top: 1rem;">
+                            <div class="info-box-title">💡 Allgemeine Formel</div>
+                            <p style="font-family: var(--font-mono);">C<sub>n</sub>H<sub>2n+1</sub>COOH (gesättigt)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fettsäuren Tabellen -->
+                <div class="content-grid" style="margin-top: 1.5rem;">
+                    <div class="card">
+                        <h3>
+                            Gesättigte Fettsäuren
+                            <span class="card-badge" style="background: var(--accent-green-dim); color: var(--accent-green);">Keine C=C</span>
+                        </h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr><th>Name</th><th>Formel</th><th>C</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Laurinsäure</td><td class="table-mono">C₁₂H₂₄O₂</td><td>12</td></tr>
+                                    <tr><td>Palmitinsäure</td><td class="table-mono">C₁₆H₃₂O₂</td><td>16</td></tr>
+                                    <tr><td>Stearinsäure</td><td class="table-mono">C₁₈H₃₆O₂</td><td>18</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p style="margin-top: 1rem; font-size: 0.9rem;">
+                            <strong>Struktur:</strong> Gerade, gestreckte Kette
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3>
+                            Ungesättigte Fettsäuren
+                            <span class="card-badge" style="background: var(--accent-orange-dim); color: var(--accent-orange);">Mit C=C</span>
+                        </h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr><th>Name</th><th>Formel</th><th>C=C</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Ölsäure</td><td class="table-mono">C₁₈H₃₄O₂</td><td>1</td></tr>
+                                    <tr><td>Linolsäure</td><td class="table-mono">C₁₈H₃₂O₂</td><td>2</td></tr>
+                                    <tr><td>Linolensäure</td><td class="table-mono">C₁₈H₃₀O₂</td><td>3</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p style="margin-top: 1rem; font-size: 0.9rem;">
+                            <strong>Struktur:</strong> Knick an jeder Doppelbindung (cis)
+                        </p>
+                    </div>
+                </div>
+
+                <!-- cis/trans Erklärung -->
+                <div class="card animate-on-scroll" style="margin-top: 1.5rem;">
+                    <h3>cis- und trans-Konfiguration</h3>
+                    <div class="svg-container" style="background: var(--bg-card);">
+                        <svg width="500" height="140" viewBox="0 0 500 140">
+                            <!-- cis Configuration -->
+                            <g transform="translate(20, 20)">
+                                <text x="80" y="0" text-anchor="middle" fill="var(--accent-cyan)" font-size="14" font-weight="bold">cis-Konfiguration</text>
+                                
+                                <!-- Chain before double bond -->
+                                <line x1="0" y1="50" x2="40" y2="50" stroke="var(--text-secondary)" stroke-width="3"/>
+                                <text x="0" y="70" fill="var(--text-muted)" font-size="11">R—</text>
+                                
+                                <!-- Double bond with kink -->
+                                <line x1="40" y1="50" x2="70" y2="30" stroke="var(--accent-cyan)" stroke-width="3"/>
+                                <line x1="43" y1="55" x2="73" y2="35" stroke="var(--accent-cyan)" stroke-width="3"/>
+                                
+                                <!-- H atoms on same side -->
+                                <text x="55" y="20" fill="var(--accent-orange)" font-size="12" font-weight="bold">H</text>
+                                <line x1="55" y1="35" x2="55" y2="22" stroke="var(--accent-orange)" stroke-width="2"/>
+                                
+                                <line x1="70" y1="30" x2="100" y2="50" stroke="var(--accent-cyan)" stroke-width="3"/>
+                                <line x1="73" y1="35" x2="103" y2="55" stroke="var(--accent-cyan)" stroke-width="3"/>
+                                
+                                <text x="88" y="20" fill="var(--accent-orange)" font-size="12" font-weight="bold">H</text>
+                                <line x1="88" y1="35" x2="88" y2="22" stroke="var(--accent-orange)" stroke-width="2"/>
+                                
+                                <!-- Chain after double bond (kinked) -->
+                                <line x1="100" y1="50" x2="140" y2="50" stroke="var(--text-secondary)" stroke-width="3"/>
+                                <text x="145" y="55" fill="var(--text-muted)" font-size="11">—R'</text>
+                                
+                                <text x="80" y="100" text-anchor="middle" fill="var(--text-muted)" font-size="12">H auf gleicher Seite → Knick</text>
+                            </g>
+                            
+                            <!-- Separator -->
+                            <line x1="250" y1="20" x2="250" y2="120" stroke="var(--border-color)" stroke-width="2" stroke-dasharray="5,5"/>
+                            
+                            <!-- trans Configuration -->
+                            <g transform="translate(280, 20)">
+                                <text x="100" y="0" text-anchor="middle" fill="var(--accent-magenta)" font-size="14" font-weight="bold">trans-Konfiguration</text>
+                                
+                                <!-- Straight chain -->
+                                <line x1="0" y1="50" x2="60" y2="50" stroke="var(--text-secondary)" stroke-width="3"/>
+                                <text x="0" y="70" fill="var(--text-muted)" font-size="11">R—</text>
+                                
+                                <!-- Double bond (straight) -->
+                                <line x1="60" y1="47" x2="140" y2="47" stroke="var(--accent-magenta)" stroke-width="3"/>
+                                <line x1="60" y1="53" x2="140" y2="53" stroke="var(--accent-magenta)" stroke-width="3"/>
+                                
+                                <!-- H atoms on opposite sides -->
+                                <text x="80" y="30" fill="var(--accent-orange)" font-size="12" font-weight="bold">H</text>
+                                <line x1="85" y1="45" x2="85" y2="32" stroke="var(--accent-orange)" stroke-width="2"/>
+                                
+                                <text x="110" y="80" fill="var(--accent-orange)" font-size="12" font-weight="bold">H</text>
+                                <line x1="115" y1="55" x2="115" y2="68" stroke="var(--accent-orange)" stroke-width="2"/>
+                                
+                                <!-- Chain continues straight -->
+                                <line x1="140" y1="50" x2="200" y2="50" stroke="var(--text-secondary)" stroke-width="3"/>
+                                <text x="185" y="70" fill="var(--text-muted)" font-size="11">—R'</text>
+                                
+                                <text x="100" y="100" text-anchor="middle" fill="var(--text-muted)" font-size="12">H gegenüber → gestreckt</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.3 Veresterung -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">2.3</span>
+                    Fettbildung (Veresterung)
+                </h3>
+
+                <div class="card">
+                    <h3>Reaktionsgleichung</h3>
+                    <p>Die Bildung eines Fettes ist eine <strong style="color: var(--accent-orange);">Kondensationsreaktion</strong> (Veresterung):</p>
+                    
+                    <div class="reaction" style="flex-direction: column; gap: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                            <div class="reaction-part">
+                                <div class="reaction-molecule" style="border-color: var(--accent-cyan);">Glycerin</div>
+                                <span class="reaction-label">C₃H₈O₃</span>
+                            </div>
+                            <span class="reaction-plus">+</span>
+                            <div class="reaction-part">
+                                <div class="reaction-molecule" style="border-color: var(--accent-orange);">3 Fettsäuren</div>
+                                <span class="reaction-label">3 R-COOH</span>
+                            </div>
+                            <span class="reaction-arrow">⇌</span>
+                            <div class="reaction-part">
+                                <div class="reaction-molecule" style="border-color: var(--accent-green);">Triglycerid</div>
+                                <span class="reaction-label">Fett</span>
+                            </div>
+                            <span class="reaction-plus">+</span>
+                            <div class="reaction-part">
+                                <div class="reaction-molecule" style="border-color: var(--accent-blue);">3 H₂O</div>
+                                <span class="reaction-label">Wasser</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Animated Ester formation -->
+                <div class="card" style="margin-top: 1.5rem;">
+                    <h3>Mechanismus der Esterbindung</h3>
+                    
+                    <div class="svg-container" style="padding: 2rem;">
+                        <svg width="550" height="150" viewBox="0 0 550 150" id="esterSvg">
+                            <!-- Carbonsäure (Fettsäure) -->
+                            <g id="acidGroup">
+                                <text x="30" y="50" fill="var(--text-muted)" font-size="11">Fettsäure</text>
+                                <text x="20" y="80" fill="var(--text-primary)" font-size="16" font-weight="bold">R</text>
+                                <line x1="35" y1="75" x2="60" y2="75" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <circle cx="75" cy="75" r="14" fill="var(--bg-card)" stroke="var(--accent-orange)" stroke-width="2"/>
+                                <text x="75" y="80" text-anchor="middle" fill="var(--text-primary)" font-size="12" font-weight="bold">C</text>
+                                
+                                <!-- Double bond O -->
+                                <line x1="75" y1="61" x2="75" y2="40" stroke="var(--accent-red)" stroke-width="2"/>
+                                <line x1="80" y1="61" x2="80" y2="40" stroke="var(--accent-red)" stroke-width="2"/>
+                                <text x="77" y="30" text-anchor="middle" fill="var(--accent-red)" font-size="14" font-weight="bold">O</text>
+                                
+                                <!-- OH group that will leave -->
+                                <line x1="89" y1="75" x2="115" y2="75" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <g id="ohLeaving">
+                                    <text x="120" y="80" fill="var(--accent-red)" font-size="14" font-weight="bold">O</text>
+                                    <text x="135" y="80" fill="var(--accent-cyan)" font-size="14" font-weight="bold">H</text>
+                                    <animate attributeName="opacity" values="1;1;0" dur="4s" repeatCount="indefinite" begin="1s"/>
+                                </g>
+                            </g>
+                            
+                            <!-- Plus sign -->
+                            <text x="170" y="80" fill="var(--text-muted)" font-size="24">+</text>
+                            
+                            <!-- Alkohol (Glycerin-Teil) -->
+                            <g id="alcoholGroup">
+                                <text x="200" y="50" fill="var(--text-muted)" font-size="11">Glycerin</text>
+                                <g id="hLeaving">
+                                    <text x="210" y="80" fill="var(--accent-cyan)" font-size="14" font-weight="bold">H</text>
+                                    <animate attributeName="opacity" values="1;1;0" dur="4s" repeatCount="indefinite" begin="1s"/>
+                                </g>
+                                <line x1="225" y1="75" x2="250" y2="75" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="255" y="80" fill="var(--accent-red)" font-size="14" font-weight="bold">O</text>
+                                <line x1="270" y1="75" x2="295" y2="75" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="305" y="80" fill="var(--text-primary)" font-size="16" font-weight="bold">R'</text>
+                            </g>
+                            
+                            <!-- Arrow -->
+                            <g transform="translate(340, 65)">
+                                <line x1="0" y1="10" x2="40" y2="10" stroke="var(--accent-green)" stroke-width="3"/>
+                                <polygon points="40,10 30,5 30,15" fill="var(--accent-green)"/>
+                            </g>
+                            
+                            <!-- Ester Product -->
+                            <g id="esterProduct" opacity="0">
+                                <text x="400" y="50" fill="var(--text-muted)" font-size="11">Ester</text>
+                                <text x="390" y="80" fill="var(--text-primary)" font-size="16" font-weight="bold">R</text>
+                                <line x1="405" y1="75" x2="425" y2="75" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <circle cx="440" cy="75" r="14" fill="var(--bg-card)" stroke="var(--accent-green)" stroke-width="2"/>
+                                <text x="440" y="80" text-anchor="middle" fill="var(--text-primary)" font-size="12" font-weight="bold">C</text>
+                                
+                                <line x1="440" y1="61" x2="440" y2="40" stroke="var(--accent-red)" stroke-width="2"/>
+                                <line x1="445" y1="61" x2="445" y2="40" stroke="var(--accent-red)" stroke-width="2"/>
+                                <text x="442" y="30" text-anchor="middle" fill="var(--accent-red)" font-size="14" font-weight="bold">O</text>
+                                
+                                <line x1="454" y1="75" x2="475" y2="75" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="485" y="80" fill="var(--accent-red)" font-size="14" font-weight="bold">O</text>
+                                <line x1="500" y1="75" x2="520" y2="75" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="530" y="80" fill="var(--text-primary)" font-size="16" font-weight="bold">R'</text>
+                                
+                                <animate attributeName="opacity" values="0;0;1" dur="4s" repeatCount="indefinite" begin="1s"/>
+                            </g>
+                            
+                            <!-- Water Product -->
+                            <g id="waterProduct" opacity="0">
+                                <text x="400" y="130" fill="var(--accent-blue)" font-size="14" font-weight="bold">+ H₂O</text>
+                                <animate attributeName="opacity" values="0;0;1" dur="4s" repeatCount="indefinite" begin="1s"/>
+                            </g>
+                        </svg>
+                    </div>
+                    
+                    <div class="info-box info">
+                        <div class="info-box-title">📝 Zusammenfassung</div>
+                        <p>Die <span style="color: var(--accent-cyan);">OH-Gruppe</span> der Carbonsäure und das <span style="color: var(--accent-cyan);">H-Atom</span> der Alkoholgruppe bilden zusammen <span style="color: var(--accent-blue);">Wasser</span>. Es entsteht eine <span style="color: var(--accent-green);">Esterbindung (C-O-C)</span>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.4 Verseifung -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">2.4</span>
+                    Fettspaltung & Verseifung
+                </h3>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <h3>
+                            Hydrolyse
+                            <span class="card-badge" style="background: var(--accent-cyan-dim); color: var(--accent-cyan);">Sauer/Enzymatisch</span>
+                        </h3>
+                        <p>Spaltung durch Wasser (umgekehrte Veresterung)</p>
+                        <div class="reaction" style="padding: 1rem;">
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">Triglycerid</div>
+                            <span class="reaction-plus">+</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">3 H₂O</div>
+                            <span class="reaction-arrow">→</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">Glycerin</div>
+                            <span class="reaction-plus">+</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">3 FS</div>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Katalysiert durch Lipase oder H⁺</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>
+                            Verseifung
+                            <span class="card-badge" style="background: var(--accent-orange-dim); color: var(--accent-orange);">Alkalisch</span>
+                        </h3>
+                        <p>Reaktion mit Lauge → <strong>Seife</strong> entsteht!</p>
+                        <div class="reaction" style="padding: 1rem;">
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">Fett</div>
+                            <span class="reaction-plus">+</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">3 NaOH</div>
+                            <span class="reaction-arrow">→</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">Glycerin</div>
+                            <span class="reaction-plus">+</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem; border-color: var(--accent-orange);">3 Seife</div>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Seife = Natriumsalz der Fettsäure (R-COO⁻Na⁺)</p>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 1.5rem;">
+                    <h3>Detaillierte Reaktionsgleichung der Verseifung</h3>
+                    <div class="formula-box">
+<pre style="line-height: 1.6; font-size: 0.9rem;">
+CH₂-O-CO-R            CH₂-OH
+|                     |
+CH-O-CO-R  + 3 NaOH → CH-OH   + 3 R-COO⁻Na⁺
+|                     |
+CH₂-O-CO-R            CH₂-OH
+
+   <span style="color: var(--accent-cyan);">Fett</span>       <span style="color: var(--text-muted);">Natronlauge</span>   <span style="color: var(--accent-green);">Glycerin</span>    <span style="color: var(--accent-orange);">Seife</span>
+</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.5 Nachweisreaktionen -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">2.5</span>
+                    Nachweisreaktionen für Fette
+                </h3>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <h3>🔬 Fettfleckprobe</h3>
+                        
+                        <div class="steps">
+                            <div class="step">
+                                <div class="step-number" style="background: var(--accent-orange-dim); color: var(--accent-orange);">1</div>
+                                <div class="step-content">
+                                    <h4>Durchführung</h4>
+                                    <p>Probe auf Filterpapier geben und trocknen lassen</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number" style="background: var(--accent-orange-dim); color: var(--accent-orange);">2</div>
+                                <div class="step-content">
+                                    <h4>Beobachtung</h4>
+                                    <p><strong style="color: var(--accent-green);">Positiv:</strong> Durchscheinender, bleibender Fleck</p>
+                                    <p><strong style="color: var(--accent-red);">Negativ:</strong> Fleck verschwindet (Wasser)</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Animated paper visualization -->
+                        <div class="svg-container" style="padding: 1.5rem;">
+                            <svg width="200" height="120" viewBox="0 0 200 120">
+                                <!-- Paper -->
+                                <rect x="20" y="20" width="160" height="80" fill="var(--bg-tertiary)" stroke="var(--text-muted)" stroke-width="2" rx="4"/>
+                                
+                                <!-- Fat spot (translucent) -->
+                                <ellipse cx="100" cy="60" rx="40" ry="30" fill="rgba(245, 158, 11, 0.3)" stroke="var(--accent-orange)" stroke-width="2">
+                                    <animate attributeName="rx" values="35;42;35" dur="3s" repeatCount="indefinite"/>
+                                    <animate attributeName="ry" values="25;32;25" dur="3s" repeatCount="indefinite"/>
+                                </ellipse>
+                                
+                                <!-- Light rays passing through -->
+                                <g opacity="0.6">
+                                    <line x1="80" y1="10" x2="80" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="4,4">
+                                        <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite"/>
+                                    </line>
+                                    <line x1="100" y1="10" x2="100" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="4,4">
+                                        <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite"/>
+                                    </line>
+                                    <line x1="120" y1="10" x2="120" y2="110" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="4,4">
+                                        <animate attributeName="stroke-dashoffset" values="0;8" dur="1s" repeatCount="indefinite"/>
+                                    </line>
+                                </g>
+                                
+                                <text x="100" y="115" text-anchor="middle" fill="var(--text-muted)" font-size="10">Licht durchdringt Fettfleck</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>🔬 Sudanrot-Färbung</h3>
+                        
+                        <div class="steps">
+                            <div class="step">
+                                <div class="step-number" style="background: var(--accent-red-dim); color: var(--accent-red);">1</div>
+                                <div class="step-content">
+                                    <h4>Durchführung</h4>
+                                    <p>Probe mit Sudanrot III oder IV versetzen, schütteln</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number" style="background: var(--accent-red-dim); color: var(--accent-red);">2</div>
+                                <div class="step-content">
+                                    <h4>Beobachtung</h4>
+                                    <p><strong style="color: var(--accent-green);">Positiv:</strong> Intensive Rot/Orange-Färbung</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="info-box tip" style="margin-top: 1rem;">
+                            <div class="info-box-title">💡 Erklärung</div>
+                            <p>Sudanfarbstoffe sind lipophil und lösen sich bevorzugt in Fetten → Fettphase färbt sich rot.</p>
+                        </div>
+                        
+                        <!-- Color change animation -->
+                        <div class="svg-container" style="padding: 1rem;">
+                            <svg width="180" height="100" viewBox="0 0 180 100">
+                                <!-- Test tube -->
+                                <rect x="60" y="10" width="60" height="70" fill="var(--bg-tertiary)" stroke="var(--text-muted)" stroke-width="2" rx="0 0 30 30"/>
+                                <ellipse cx="90" cy="80" rx="30" ry="8" fill="var(--bg-tertiary)" stroke="var(--text-muted)" stroke-width="2"/>
+                                
+                                <!-- Liquid with color change -->
+                                <rect x="62" y="30" width="56" height="48" rx="0 0 28 28">
+                                    <animate attributeName="fill" values="var(--bg-secondary);#ef4444;#f97316;#ef4444" dur="3s" repeatCount="indefinite"/>
+                                </rect>
+                                
+                                <text x="90" y="95" text-anchor="middle" fill="var(--text-muted)" font-size="10">Farbwechsel</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kohlenhydrate">
+            <div class="section-header animate-on-scroll">
+                <div class="section-icon">🍬</div>
+                <div class="section-title-group">
+                    <h2>Kohlenhydrate</h2>
+                    <p>Mono-, Di- und Polysaccharide</p>
+                </div>
+            </div>
+
+            <!-- 3.1 Definition -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">3.1</span>
+                    Definition und Einteilung
+                </h3>
+
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <h3>Was sind Kohlenhydrate?</h3>
+                    <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                        <strong style="color: var(--accent-cyan);">Kohlenhydrate</strong> (Saccharide) sind organische Verbindungen 
+                        mit der allgemeinen Summenformel:
+                    </p>
+                    <div class="formula-box" style="text-align: center;">
+                        <span style="font-size: 1.5rem; color: var(--accent-cyan);">C<sub>n</sub>(H<sub>2</sub>O)<sub>n</sub></span>
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">"Kohlenstoff + Wasser" (historischer Name)</p>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Gruppe</th>
+                                <th>Bausteine</th>
+                                <th>Beispiele</th>
+                                <th>Summenformel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="color: var(--accent-green);">Monosaccharide</td>
+                                <td>1</td>
+                                <td>Glucose, Fructose, Galactose</td>
+                                <td class="table-mono">C₆H₁₂O₆</td>
+                            </tr>
+                            <tr>
+                                <td style="color: var(--accent-orange);">Disaccharide</td>
+                                <td>2</td>
+                                <td>Maltose, Saccharose, Lactose</td>
+                                <td class="table-mono">C₁₂H₂₂O₁₁</td>
+                            </tr>
+                            <tr>
+                                <td style="color: var(--accent-magenta);">Polysaccharide</td>
+                                <td>>10</td>
+                                <td>Stärke, Cellulose, Glykogen</td>
+                                <td class="table-mono">(C₆H₁₀O₅)ₙ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 3.2 Monosaccharide -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">3.2</span>
+                    Monosaccharide (Einfachzucker)
+                </h3>
+
+                <!-- Aldosen vs Ketosen -->
+                <div class="content-grid" style="margin-bottom: 2rem;">
+                    <div class="card">
+                        <h3>
+                            Aldosen
+                            <span class="card-badge" style="background: var(--accent-cyan-dim); color: var(--accent-cyan);">-CHO am C1</span>
+                        </h3>
+                        <p>Aldehydgruppe am ersten C-Atom</p>
+                        <div class="formula-box" style="text-align: center;">
+                            <span style="font-size: 1.2rem;">R-<span style="color: var(--accent-cyan);">CHO</span></span>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Beispiel: Glucose, Galactose</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>
+                            Ketosen
+                            <span class="card-badge" style="background: var(--accent-orange-dim); color: var(--accent-orange);">>C=O am C2</span>
+                        </h3>
+                        <p>Ketogruppe am zweiten C-Atom</p>
+                        <div class="formula-box" style="text-align: center;">
+                            <span style="font-size: 1.2rem;">R-<span style="color: var(--accent-orange);">CO</span>-R'</span>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Beispiel: Fructose</p>
+                    </div>
+                </div>
+
+                <!-- Glucose -->
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <h3>Glucose (Traubenzucker) – C₆H₁₂O₆</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+                        <!-- Fischer Projektion -->
+                        <div>
+                            <h4 style="color: var(--accent-cyan); margin-bottom: 1rem;">Fischer-Projektion (offenkettig)</h4>
+                            <div class="svg-container">
+                                <svg width="180" height="280" viewBox="0 0 180 280">
+                                    <!-- C1 - CHO -->
+                                    <g transform="translate(90, 25)">
+                                        <text x="0" y="0" text-anchor="middle" fill="var(--accent-cyan)" font-size="14" font-weight="bold">CHO</text>
+                                        <text x="-40" y="5" fill="var(--text-muted)" font-size="10">C1</text>
+                                        <line x1="0" y1="8" x2="0" y2="30" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    </g>
+                                    
+                                    <!-- C2 -->
+                                    <g transform="translate(90, 60)">
+                                        <circle cx="0" cy="0" r="12" fill="var(--bg-card)" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="0" y="5" text-anchor="middle" fill="var(--text-primary)" font-size="11" font-weight="bold">C</text>
+                                        <text x="-40" y="5" fill="var(--text-muted)" font-size="10">C2</text>
+                                        <line x1="-12" y1="0" x2="-35" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="-45" y="5" fill="var(--text-primary)" font-size="12">H</text>
+                                        <line x1="12" y1="0" x2="35" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="42" y="5" fill="var(--accent-red)" font-size="12" font-weight="bold">OH</text>
+                                        <line x1="0" y1="12" x2="0" y2="33" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    </g>
+                                    
+                                    <!-- C3 -->
+                                    <g transform="translate(90, 100)">
+                                        <circle cx="0" cy="0" r="12" fill="var(--bg-card)" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="0" y="5" text-anchor="middle" fill="var(--text-primary)" font-size="11" font-weight="bold">C</text>
+                                        <text x="-40" y="5" fill="var(--text-muted)" font-size="10">C3</text>
+                                        <line x1="12" y1="0" x2="35" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="42" y="5" fill="var(--text-primary)" font-size="12">H</text>
+                                        <line x1="-12" y1="0" x2="-35" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="-55" y="5" fill="var(--accent-red)" font-size="12" font-weight="bold">HO</text>
+                                        <line x1="0" y1="12" x2="0" y2="33" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    </g>
+                                    
+                                    <!-- C4 -->
+                                    <g transform="translate(90, 140)">
+                                        <circle cx="0" cy="0" r="12" fill="var(--bg-card)" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="0" y="5" text-anchor="middle" fill="var(--text-primary)" font-size="11" font-weight="bold">C</text>
+                                        <text x="-40" y="5" fill="var(--text-muted)" font-size="10">C4</text>
+                                        <line x1="-12" y1="0" x2="-35" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="-45" y="5" fill="var(--text-primary)" font-size="12">H</text>
+                                        <line x1="12" y1="0" x2="35" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="42" y="5" fill="var(--accent-red)" font-size="12" font-weight="bold">OH</text>
+                                        <line x1="0" y1="12" x2="0" y2="33" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    </g>
+                                    
+                                    <!-- C5 -->
+                                    <g transform="translate(90, 180)">
+                                        <circle cx="0" cy="0" r="12" fill="var(--bg-card)" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="0" y="5" text-anchor="middle" fill="var(--text-primary)" font-size="11" font-weight="bold">C</text>
+                                        <text x="-40" y="5" fill="var(--text-muted)" font-size="10">C5</text>
+                                        <line x1="-12" y1="0" x2="-35" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="-45" y="5" fill="var(--text-primary)" font-size="12">H</text>
+                                        <line x1="12" y1="0" x2="35" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="42" y="5" fill="var(--accent-red)" font-size="12" font-weight="bold">OH</text>
+                                        <line x1="0" y1="12" x2="0" y2="33" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    </g>
+                                    
+                                    <!-- C6 - CH2OH -->
+                                    <g transform="translate(90, 225)">
+                                        <text x="0" y="0" text-anchor="middle" fill="var(--text-primary)" font-size="14" font-weight="bold">CH₂OH</text>
+                                        <text x="-40" y="0" fill="var(--text-muted)" font-size="10">C6</text>
+                                    </g>
+                                    
+                                    <text x="90" y="260" text-anchor="middle" fill="var(--accent-cyan)" font-size="12">D-Glucose</text>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Haworth Projektion -->
+                        <div>
+                            <h4 style="color: var(--accent-green); margin-bottom: 1rem;">Haworth-Projektion (Ringform)</h4>
+                            <div class="svg-container">
+                                <svg width="220" height="200" viewBox="0 0 220 200">
+                                    <!-- Pyranose Ring α-D-Glucose -->
+                                    <g transform="translate(110, 100)">
+                                        <!-- Ring hexagon -->
+                                        <polygon points="0,-50 43,-25 43,25 0,50 -43,25 -43,-25" fill="none" stroke="var(--accent-green)" stroke-width="3"/>
+                                        
+                                        <!-- O in ring -->
+                                        <circle cx="43" cy="0" r="14" fill="var(--bg-primary)"/>
+                                        <text x="43" y="5" text-anchor="middle" fill="var(--accent-red)" font-size="14" font-weight="bold">O</text>
+                                        
+                                        <!-- C positions -->
+                                        <text x="0" y="-55" text-anchor="middle" fill="var(--text-muted)" font-size="10">C1</text>
+                                        <text x="55" y="-25" text-anchor="start" fill="var(--text-muted)" font-size="10">C5</text>
+                                        <text x="55" y="30" text-anchor="start" fill="var(--text-muted)" font-size="10">C4</text>
+                                        <text x="0" y="65" text-anchor="middle" fill="var(--text-muted)" font-size="10">C3</text>
+                                        <text x="-55" y="30" text-anchor="end" fill="var(--text-muted)" font-size="10">C2</text>
+                                        
+                                        <!-- CH2OH at C5 -->
+                                        <line x1="43" y1="-25" x2="60" y2="-50" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="70" y="-50" fill="var(--text-primary)" font-size="11">CH₂OH</text>
+                                        
+                                        <!-- OH groups -->
+                                        <!-- C1 OH (α = down) -->
+                                        <line x1="0" y1="-50" x2="0" y2="-75" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="0" y="-80" text-anchor="middle" fill="var(--accent-red)" font-size="12" font-weight="bold">OH</text>
+                                        
+                                        <!-- C2 OH (down) -->
+                                        <line x1="-43" y1="25" x2="-60" y2="40" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="-70" y="48" fill="var(--accent-red)" font-size="12" font-weight="bold">OH</text>
+                                        
+                                        <!-- C3 OH (up) -->
+                                        <line x1="0" y1="50" x2="0" y2="75" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="0" y="88" text-anchor="middle" fill="var(--accent-red)" font-size="12" font-weight="bold">OH</text>
+                                        
+                                        <!-- C4 OH (down) -->
+                                        <line x1="43" y1="25" x2="60" y2="40" stroke="var(--text-secondary)" stroke-width="2"/>
+                                        <text x="70" y="48" fill="var(--accent-red)" font-size="12" font-weight="bold">OH</text>
+                                        
+                                        <!-- H atoms -->
+                                        <text x="15" y="-40" fill="var(--text-muted)" font-size="10">H</text>
+                                        <text x="-55" y="10" fill="var(--text-muted)" font-size="10">H</text>
+                                        <text x="-15" y="45" fill="var(--text-muted)" font-size="10">H</text>
+                                        <text x="30" y="35" fill="var(--text-muted)" font-size="10">H</text>
+                                    </g>
+                                    
+                                    <text x="110" y="190" text-anchor="middle" fill="var(--accent-green)" font-size="12">α-D-Glucopyranose</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box info" style="margin-top: 1.5rem;">
+                        <div class="info-box-title">📝 α vs β-Konfiguration</div>
+                        <p>
+                            <strong style="color: var(--accent-cyan);">α-Form:</strong> OH am C1 steht <em>unten</em> (trans zur CH₂OH-Gruppe)<br>
+                            <strong style="color: var(--accent-magenta);">β-Form:</strong> OH am C1 steht <em>oben</em> (cis zur CH₂OH-Gruppe)
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Fructose -->
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <h3>Fructose (Fruchtzucker) – C₆H₁₂O₆</h3>
+                    <p>Ketohexose mit Ketogruppe am C2 – bildet bevorzugt einen <strong>5-Ring (Furanose)</strong></p>
+                    
+                    <div class="svg-container">
+                        <svg width="300" height="160" viewBox="0 0 300 160">
+                            <!-- Furanose Ring -->
+                            <g transform="translate(150, 80)">
+                                <!-- Pentagon ring -->
+                                <polygon points="0,-45 43,-14 26,36 -26,36 -43,-14" fill="none" stroke="var(--accent-orange)" stroke-width="3"/>
+                                
+                                <!-- O in ring -->
+                                <circle cx="0" cy="-45" r="12" fill="var(--bg-primary)"/>
+                                <text x="0" y="-40" text-anchor="middle" fill="var(--accent-red)" font-size="12" font-weight="bold">O</text>
+                                
+                                <!-- C2 (anomeric carbon) -->
+                                <text x="-55" y="-8" fill="var(--text-muted)" font-size="10">C2</text>
+                                <line x1="-43" y1="-14" x2="-70" y2="-14" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="-100" y="-10" fill="var(--text-primary)" font-size="11">HOH₂C</text>
+                                
+                                <!-- OH at C2 -->
+                                <line x1="-43" y1="-14" x2="-55" y2="-35" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="-60" y="-40" fill="var(--accent-red)" font-size="11" font-weight="bold">OH</text>
+                                
+                                <!-- C3 -->
+                                <text x="-40" y="50" fill="var(--text-muted)" font-size="10">C3</text>
+                                <line x1="-26" y1="36" x2="-40" y2="55" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="-50" y="68" fill="var(--accent-red)" font-size="11" font-weight="bold">OH</text>
+                                
+                                <!-- C4 -->
+                                <text x="40" y="50" fill="var(--text-muted)" font-size="10">C4</text>
+                                <line x1="26" y1="36" x2="40" y2="55" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="45" y="68" fill="var(--accent-red)" font-size="11" font-weight="bold">OH</text>
+                                
+                                <!-- C5 -->
+                                <text x="55" y="-8" fill="var(--text-muted)" font-size="10">C5</text>
+                                
+                                <!-- CH2OH at C5 (C6) -->
+                                <line x1="43" y1="-14" x2="70" y2="-14" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="85" y="-10" fill="var(--text-primary)" font-size="11">CH₂OH</text>
+                            </g>
+                            
+                            <text x="150" y="150" text-anchor="middle" fill="var(--accent-orange)" font-size="12">β-D-Fructofuranose</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.3 Disaccharide -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">3.3</span>
+                    Disaccharide (Zweifachzucker)
+                </h3>
+
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <h3>Glykosidische Bindung</h3>
+                    <p>Entsteht durch <strong style="color: var(--accent-cyan);">Kondensation</strong> zwischen zwei Monosacchariden unter Wasserabspaltung.</p>
+                    
+                    <div class="reaction">
+                        <div class="reaction-part">
+                            <div class="reaction-molecule">Monosaccharid</div>
+                        </div>
+                        <span class="reaction-plus">+</span>
+                        <div class="reaction-part">
+                            <div class="reaction-molecule">Monosaccharid</div>
+                        </div>
+                        <span class="reaction-arrow">→</span>
+                        <div class="reaction-part">
+                            <div class="reaction-molecule" style="border-color: var(--accent-orange);">Disaccharid</div>
+                        </div>
+                        <span class="reaction-plus">+</span>
+                        <div class="reaction-part">
+                            <div class="reaction-molecule" style="border-color: var(--accent-blue);">H₂O</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-wrapper" style="margin-bottom: 1.5rem;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Disaccharid</th>
+                                <th>Bausteine</th>
+                                <th>Bindung</th>
+                                <th>Reduzierend?</th>
+                                <th>Vorkommen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong style="color: var(--accent-orange);">Maltose</strong></td>
+                                <td>2 × Glucose</td>
+                                <td class="table-mono">α-1,4</td>
+                                <td style="color: var(--accent-green);">Ja ✓</td>
+                                <td>Malz, Stärkeabbau</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color: var(--accent-cyan);">Saccharose</strong></td>
+                                <td>Glucose + Fructose</td>
+                                <td class="table-mono">α-1,β-2</td>
+                                <td style="color: var(--accent-red);">Nein ✗</td>
+                                <td>Haushaltszucker</td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color: var(--accent-magenta);">Lactose</strong></td>
+                                <td>Galactose + Glucose</td>
+                                <td class="table-mono">β-1,4</td>
+                                <td style="color: var(--accent-green);">Ja ✓</td>
+                                <td>Milch</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="info-box warning">
+                    <div class="info-box-title">⚠️ Wichtig: Saccharose ist NICHT reduzierend!</div>
+                    <p>Bei Saccharose sind <em>beide</em> anomeren C-Atome an der glykosidischen Bindung beteiligt. Daher kann sich kein Aldehyd/Keton mehr bilden → keine Fehling-Reaktion!</p>
+                </div>
+
+                <!-- Maltose Structure -->
+                <div class="card" style="margin-top: 1.5rem;">
+                    <h3>Maltose – α-1,4-glykosidische Bindung</h3>
+                    <div class="svg-container">
+                        <svg width="450" height="180" viewBox="0 0 450 180">
+                            <!-- First glucose ring -->
+                            <g transform="translate(100, 90) scale(0.8)">
+                                <polygon points="0,-50 43,-25 43,25 0,50 -43,25 -43,-25" fill="none" stroke="var(--accent-cyan)" stroke-width="3"/>
+                                <circle cx="43" cy="0" r="14" fill="var(--bg-primary)"/>
+                                <text x="43" y="5" text-anchor="middle" fill="var(--accent-red)" font-size="14" font-weight="bold">O</text>
+                                
+                                <!-- OH groups -->
+                                <line x1="0" y1="-50" x2="0" y2="-70" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="0" y="-75" text-anchor="middle" fill="var(--accent-red)" font-size="11">OH</text>
+                                <line x1="-43" y1="25" x2="-60" y2="40" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="-68" y="48" fill="var(--accent-red)" font-size="11">OH</text>
+                                <line x1="0" y1="50" x2="0" y2="70" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="0" y="82" text-anchor="middle" fill="var(--accent-red)" font-size="11">OH</text>
+                                
+                                <!-- CH2OH -->
+                                <line x1="43" y1="-25" x2="55" y2="-45" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="60" y="-50" fill="var(--text-primary)" font-size="10">CH₂OH</text>
+                                
+                                <text x="0" y="100" text-anchor="middle" fill="var(--text-muted)" font-size="11">Glucose 1</text>
+                            </g>
+                            
+                            <!-- Glycosidic bond -->
+                            <g transform="translate(175, 90)">
+                                <line x1="0" y1="20" x2="50" y2="20" stroke="var(--accent-orange)" stroke-width="4">
+                                    <animate attributeName="stroke-dasharray" values="0,100;100,0" dur="2s" repeatCount="indefinite"/>
+                                </line>
+                                <text x="25" y="5" text-anchor="middle" fill="var(--accent-orange)" font-size="12" font-weight="bold">α-1,4</text>
+                                <circle cx="25" cy="20" r="8" fill="var(--accent-red)">
+                                    <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite"/>
+                                </circle>
+                                <text x="25" y="24" text-anchor="middle" fill="var(--text-primary)" font-size="10" font-weight="bold">O</text>
+                            </g>
+                            
+                            <!-- Second glucose ring -->
+                            <g transform="translate(300, 90) scale(0.8)">
+                                <polygon points="0,-50 43,-25 43,25 0,50 -43,25 -43,-25" fill="none" stroke="var(--accent-cyan)" stroke-width="3"/>
+                                <circle cx="43" cy="0" r="14" fill="var(--bg-primary)"/>
+                                <text x="43" y="5" text-anchor="middle" fill="var(--accent-red)" font-size="14" font-weight="bold">O</text>
+                                
+                                <!-- Free anomeric OH (reducing end) -->
+                                <line x1="0" y1="-50" x2="0" y2="-70" stroke="var(--accent-green)" stroke-width="2"/>
+                                <text x="0" y="-75" text-anchor="middle" fill="var(--accent-green)" font-size="11" font-weight="bold">OH</text>
+                                <text x="30" y="-70" fill="var(--accent-green)" font-size="9">reduzierend!</text>
+                                
+                                <line x1="-43" y1="25" x2="-60" y2="40" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="-68" y="48" fill="var(--accent-red)" font-size="11">OH</text>
+                                <line x1="0" y1="50" x2="0" y2="70" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="0" y="82" text-anchor="middle" fill="var(--accent-red)" font-size="11">OH</text>
+                                <line x1="43" y1="25" x2="60" y2="40" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="68" y="48" fill="var(--accent-red)" font-size="11">OH</text>
+                                
+                                <!-- CH2OH -->
+                                <line x1="43" y1="-25" x2="55" y2="-45" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="60" y="-50" fill="var(--text-primary)" font-size="10">CH₂OH</text>
+                                
+                                <text x="0" y="100" text-anchor="middle" fill="var(--text-muted)" font-size="11">Glucose 2</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.4 Polysaccharide -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">3.4</span>
+                    Polysaccharide (Vielfachzucker)
+                </h3>
+
+                <div class="formula-box" style="text-align: center; margin-bottom: 1.5rem;">
+                    <p style="margin-bottom: 0.5rem; color: var(--text-muted);">Allgemeine Bildungsgleichung:</p>
+                    <span style="font-size: 1.2rem;">n C₆H₁₂O₆ → (C₆H₁₀O₅)ₙ + (n-1) H₂O</span>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Stärke -->
+                    <div class="card">
+                        <h3>
+                            Stärke
+                            <span class="card-badge" style="background: var(--accent-cyan-dim); color: var(--accent-cyan);">Pflanzlich</span>
+                        </h3>
+                        <p>Pflanzlicher Energiespeicher – besteht aus zwei Komponenten:</p>
+                        
+                        <div style="margin-top: 1rem;">
+                            <h4 style="color: var(--accent-blue); font-size: 1rem;">Amylose (20-30%)</h4>
+                            <ul style="padding-left: 1.2rem; color: var(--text-secondary); font-size: 0.9rem;">
+                                <li>Unverzweigt, α-1,4-Bindungen</li>
+                                <li>Helix-Struktur (Spirale)</li>
+                                <li>Mit Iod: <strong style="color: var(--accent-blue);">tiefblau</strong></li>
+                            </ul>
+                        </div>
+                        
+                        <div style="margin-top: 1rem;">
+                            <h4 style="color: var(--accent-magenta); font-size: 1rem;">Amylopektin (70-80%)</h4>
+                            <ul style="padding-left: 1.2rem; color: var(--text-secondary); font-size: 0.9rem;">
+                                <li>Verzweigt alle 20-25 Einheiten</li>
+                                <li>α-1,4 + α-1,6-Bindungen</li>
+                                <li>Mit Iod: <strong style="color: var(--accent-magenta);">rotviolett</strong></li>
+                            </ul>
+                        </div>
+
+                        <!-- Animated helix -->
+                        <div class="svg-container" style="margin-top: 1rem; padding: 1rem;">
+                            <svg width="180" height="100" viewBox="0 0 180 100">
+                                <text x="90" y="15" text-anchor="middle" fill="var(--text-muted)" font-size="10">Amylose-Helix</text>
+                                <!-- Helix representation -->
+                                <path d="M20,50 Q35,30 50,50 T80,50 T110,50 T140,50 T160,50" 
+                                      fill="none" stroke="var(--accent-cyan)" stroke-width="3"
+                                      stroke-dasharray="200" stroke-dashoffset="200">
+                                    <animate attributeName="stroke-dashoffset" from="200" to="0" dur="3s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M20,60 Q35,80 50,60 T80,60 T110,60 T140,60 T160,60" 
+                                      fill="none" stroke="var(--accent-cyan)" stroke-width="3" opacity="0.5"
+                                      stroke-dasharray="200" stroke-dashoffset="200">
+                                    <animate attributeName="stroke-dashoffset" from="200" to="0" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+                                </path>
+                                <text x="90" y="95" text-anchor="middle" fill="var(--text-muted)" font-size="10">6 Glucose/Windung</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Cellulose -->
+                    <div class="card">
+                        <h3>
+                            Cellulose
+                            <span class="card-badge" style="background: var(--accent-green-dim); color: var(--accent-green);">Struktur</span>
+                        </h3>
+                        <p>Pflanzlicher Gerüststoff (Zellwände)</p>
+                        
+                        <ul style="margin-top: 1rem; padding-left: 1.2rem; color: var(--text-secondary); font-size: 0.9rem;">
+                            <li>Unverzweigt, <strong style="color: var(--accent-green);">β-1,4</strong>-Bindungen</li>
+                            <li>Gestreckte Kettenstruktur</li>
+                            <li>Wasserunlöslich</li>
+                            <li><strong style="color: var(--accent-red);">Nicht verdaubar</strong> für Menschen</li>
+                        </ul>
+                        
+                        <div class="info-box warning" style="margin-top: 1rem; padding: 0.8rem;">
+                            <div class="info-box-title" style="font-size: 0.9rem;">⚠️ Unterschied zu Stärke</div>
+                            <p style="font-size: 0.85rem;">Stärke: <strong>α</strong>-Bindung → Helix, verdaubar<br>
+                            Cellulose: <strong>β</strong>-Bindung → gestreckt, nicht verdaubar</p>
+                        </div>
+
+                        <!-- Linear chain visualization -->
+                        <div class="svg-container" style="margin-top: 1rem; padding: 1rem;">
+                            <svg width="180" height="60" viewBox="0 0 180 60">
+                                <text x="90" y="12" text-anchor="middle" fill="var(--text-muted)" font-size="10">Cellulose-Kette</text>
+                                <!-- Straight chain -->
+                                <line x1="10" y1="35" x2="170" y2="35" stroke="var(--accent-green)" stroke-width="3"/>
+                                <!-- Glucose units -->
+                                <circle cx="30" cy="35" r="8" fill="var(--accent-green)"/>
+                                <circle cx="60" cy="35" r="8" fill="var(--accent-green)"/>
+                                <circle cx="90" cy="35" r="8" fill="var(--accent-green)"/>
+                                <circle cx="120" cy="35" r="8" fill="var(--accent-green)"/>
+                                <circle cx="150" cy="35" r="8" fill="var(--accent-green)"/>
+                                <text x="90" y="55" text-anchor="middle" fill="var(--text-muted)" font-size="10">β-1,4 verknüpft</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Glykogen -->
+                    <div class="card">
+                        <h3>
+                            Glykogen
+                            <span class="card-badge" style="background: var(--accent-orange-dim); color: var(--accent-orange);">Tierisch</span>
+                        </h3>
+                        <p>Tierischer Energiespeicher (Leber, Muskeln)</p>
+                        
+                        <ul style="margin-top: 1rem; padding-left: 1.2rem; color: var(--text-secondary); font-size: 0.9rem;">
+                            <li>Wie Amylopektin, aber <strong>stärker verzweigt</strong></li>
+                            <li>Verzweigung alle 8-12 Einheiten</li>
+                            <li>Schnell mobilisierbar</li>
+                            <li>Mit Iod: <strong style="color: #8b4513;">rotbraun</strong></li>
+                        </ul>
+
+                        <!-- Branched structure -->
+                        <div class="svg-container" style="margin-top: 1rem; padding: 1rem;">
+                            <svg width="180" height="80" viewBox="0 0 180 80">
+                                <text x="90" y="12" text-anchor="middle" fill="var(--text-muted)" font-size="10">Verzweigte Struktur</text>
+                                <!-- Main chain -->
+                                <line x1="10" y1="45" x2="170" y2="45" stroke="var(--accent-orange)" stroke-width="3"/>
+                                <!-- Branches -->
+                                <line x1="50" y1="45" x2="50" y2="25" stroke="var(--accent-orange)" stroke-width="2"/>
+                                <line x1="50" y1="25" x2="80" y2="25" stroke="var(--accent-orange)" stroke-width="2"/>
+                                <line x1="90" y1="45" x2="90" y2="65" stroke="var(--accent-orange)" stroke-width="2"/>
+                                <line x1="90" y1="65" x2="120" y2="65" stroke="var(--accent-orange)" stroke-width="2"/>
+                                <line x1="130" y1="45" x2="130" y2="25" stroke="var(--accent-orange)" stroke-width="2"/>
+                                <line x1="130" y1="25" x2="160" y2="25" stroke="var(--accent-orange)" stroke-width="2"/>
+                                
+                                <!-- α-1,6 labels -->
+                                <text x="50" y="38" text-anchor="middle" fill="var(--accent-cyan)" font-size="8">α1,6</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.5 Nachweisreaktionen -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">3.5</span>
+                    Nachweisreaktionen für Kohlenhydrate
+                </h3>
+
+                <div class="content-grid">
+                    <!-- Fehling -->
+                    <div class="card">
+                        <h3>🔬 Fehling-Probe</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Nachweis für <strong>reduzierende Zucker</strong></p>
+                        
+                        <div class="steps" style="margin-top: 1rem;">
+                            <div class="step">
+                                <div class="step-number" style="background: var(--accent-cyan-dim); color: var(--accent-cyan);">1</div>
+                                <div class="step-content">
+                                    <p style="font-size: 0.9rem;">Fehling I (CuSO₄) + Fehling II (NaOH/Tartrat) mischen</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number" style="background: var(--accent-cyan-dim); color: var(--accent-cyan);">2</div>
+                                <div class="step-content">
+                                    <p style="font-size: 0.9rem;">Probe zugeben und erhitzen</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Animated color change -->
+                        <div class="svg-container" style="padding: 1rem;">
+                            <svg width="200" height="100" viewBox="0 0 200 100">
+                                <!-- Test tubes -->
+                                <g transform="translate(30, 10)">
+                                    <rect x="0" y="0" width="40" height="60" rx="0 0 20 20" fill="none" stroke="var(--text-muted)" stroke-width="2"/>
+                                    <rect x="2" y="20" width="36" height="38" rx="0 0 18 18">
+                                        <animate attributeName="fill" values="#3b82f6;#3b82f6;#3b82f6" dur="4s" repeatCount="indefinite"/>
+                                    </rect>
+                                    <text x="20" y="85" text-anchor="middle" fill="var(--text-muted)" font-size="10">Start</text>
+                                    <text x="20" y="50" text-anchor="middle" fill="white" font-size="10">Cu²⁺</text>
+                                </g>
+                                
+                                <text x="100" y="45" text-anchor="middle" fill="var(--accent-cyan)" font-size="20">→</text>
+                                <text x="100" y="60" text-anchor="middle" fill="var(--text-muted)" font-size="9">Δ</text>
+                                
+                                <g transform="translate(130, 10)">
+                                    <rect x="0" y="0" width="40" height="60" rx="0 0 20 20" fill="none" stroke="var(--text-muted)" stroke-width="2"/>
+                                    <rect x="2" y="20" width="36" height="38" rx="0 0 18 18">
+                                        <animate attributeName="fill" values="#3b82f6;#f97316;#dc2626" dur="4s" repeatCount="indefinite"/>
+                                    </rect>
+                                    <text x="20" y="85" text-anchor="middle" fill="var(--accent-green)" font-size="10">Positiv</text>
+                                    <text x="20" y="50" text-anchor="middle" fill="white" font-size="9">Cu₂O↓</text>
+                                </g>
+                            </svg>
+                        </div>
+                        
+                        <div class="formula-box" style="font-size: 0.85rem; padding: 0.8rem;">
+                            R-CHO + 2 Cu²⁺ + 5 OH⁻ → R-COO⁻ + <span style="color: var(--accent-red);">Cu₂O↓</span> + 3 H₂O
+                        </div>
+                    </div>
+
+                    <!-- Tollens -->
+                    <div class="card">
+                        <h3>🔬 Tollens-Probe (Silberspiegel)</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Nachweis für <strong>Aldehyde</strong></p>
+                        
+                        <div class="steps" style="margin-top: 1rem;">
+                            <div class="step">
+                                <div class="step-number" style="background: var(--accent-blue-dim); color: var(--accent-blue);">1</div>
+                                <div class="step-content">
+                                    <p style="font-size: 0.9rem;">AgNO₃ + NH₃ (Tollens-Reagenz) herstellen</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number" style="background: var(--accent-blue-dim); color: var(--accent-blue);">2</div>
+                                <div class="step-content">
+                                    <p style="font-size: 0.9rem;">Probe zugeben, im Wasserbad erwärmen</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p style="margin-top: 1rem;"><strong style="color: var(--accent-green);">Positiv:</strong> Silberspiegel an der Glaswand</p>
+                        
+                        <div class="formula-box" style="font-size: 0.85rem; padding: 0.8rem; margin-top: 0.5rem;">
+                            R-CHO + 2 [Ag(NH₃)₂]⁺ → R-COO⁻ + 2 <span style="color: #c0c0c0;">Ag↓</span> + 4 NH₃
+                        </div>
+                    </div>
+
+                    <!-- Iod-Stärke -->
+                    <div class="card">
+                        <h3>🔬 Iod-Stärke-Reaktion</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Spezifischer Nachweis für <strong>Stärke</strong></p>
+                        
+                        <p style="margin: 1rem 0;"><strong>Reagenz:</strong> Iod-Kaliumiodid-Lösung (Lugol)</p>
+                        
+                        <div class="table-wrapper" style="margin: 1rem 0;">
+                            <table style="font-size: 0.9rem;">
+                                <thead>
+                                    <tr><th>Substanz</th><th>Farbe</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Amylose</td><td><span style="color: #1e40af; font-weight: bold;">■ Tiefblau</span></td></tr>
+                                    <tr><td>Amylopektin</td><td><span style="color: #7c3aed; font-weight: bold;">■ Rotviolett</span></td></tr>
+                                    <tr><td>Glykogen</td><td><span style="color: #92400e; font-weight: bold;">■ Rotbraun</span></td></tr>
+                                    <tr><td>Cellulose</td><td>Keine Färbung</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="info-box tip" style="padding: 0.8rem; margin-top: 0.5rem;">
+                            <p style="font-size: 0.85rem; margin: 0;"><strong>Reversibel:</strong> Färbung verschwindet beim Erhitzen, kehrt beim Abkühlen zurück!</p>
+                        </div>
+                    </div>
+
+                    <!-- Seliwanoff -->
+                    <div class="card">
+                        <h3>🔬 Seliwanoff-Probe</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Unterscheidung <strong>Ketosen vs Aldosen</strong></p>
+                        
+                        <p style="margin: 1rem 0;"><strong>Reagenz:</strong> Resorcin in konz. HCl</p>
+                        
+                        <div style="margin-top: 1rem;">
+                            <p><strong style="color: var(--accent-red);">Ketosen (z.B. Fructose):</strong><br>
+                            → Schnelle Rotfärbung</p>
+                            
+                            <p style="margin-top: 0.5rem;"><strong style="color: var(--text-muted);">Aldosen (z.B. Glucose):</strong><br>
+                            → Langsame/keine Färbung</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.6 Reaktionsgleichungen -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">3.6</span>
+                    Wichtige Reaktionsgleichungen
+                </h3>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <h3>Alkoholische Gärung</h3>
+                        <div class="reaction" style="padding: 1rem;">
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">C₆H₁₂O₆</div>
+                            <span class="reaction-arrow">→</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">2 C₂H₅OH</div>
+                            <span class="reaction-plus">+</span>
+                            <div class="reaction-molecule" style="font-size: 0.9rem;">2 CO₂↑</div>
+                        </div>
+                        <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted);">Glucose → Ethanol + Kohlendioxid (Hefe)</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Zellatmung</h3>
+                        <div class="reaction" style="padding: 1rem;">
+                            <div class="reaction-molecule" style="font-size: 0.85rem;">C₆H₁₂O₆</div>
+                            <span class="reaction-plus">+</span>
+                            <div class="reaction-molecule" style="font-size: 0.85rem;">6 O₂</div>
+                            <span class="reaction-arrow">→</span>
+                            <div class="reaction-molecule" style="font-size: 0.85rem;">6 CO₂</div>
+                            <span class="reaction-plus">+</span>
+                            <div class="reaction-molecule" style="font-size: 0.85rem;">6 H₂O</div>
+                        </div>
+                        <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted);">+ Energie (ATP)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="proteine">
+            <div class="section-header animate-on-scroll">
+                <div class="section-icon">🧬</div>
+                <div class="section-title-group">
+                    <h2>Proteine</h2>
+                    <p>Aminosäuren und Proteinstrukturen</p>
+                </div>
+            </div>
+
+            <!-- 4.1 Definition -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">4.1</span>
+                    Definition und Funktionen
+                </h3>
+
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <h3>Was sind Proteine?</h3>
+                    <p style="font-size: 1.1rem; margin-bottom: 1rem;">
+                        <strong style="color: var(--accent-magenta);">Proteine</strong> (Eiweiße) sind Makromoleküle aus 
+                        <strong>Aminosäuren</strong>, die durch <strong>Peptidbindungen</strong> verknüpft sind.
+                    </p>
+                </div>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <h3>Biologische Funktionen</h3>
+                        <div class="table-wrapper">
+                            <table style="font-size: 0.9rem;">
+                                <tbody>
+                                    <tr>
+                                        <td style="color: var(--accent-cyan);">🧪 Enzyme</td>
+                                        <td>Biokatalysatoren</td>
+                                        <td class="table-mono" style="color: var(--text-muted);">Amylase</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: var(--accent-green);">🏗️ Struktur</td>
+                                        <td>Gerüstsubstanz</td>
+                                        <td class="table-mono" style="color: var(--text-muted);">Kollagen</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: var(--accent-orange);">🚚 Transport</td>
+                                        <td>Stofftransport</td>
+                                        <td class="table-mono" style="color: var(--text-muted);">Hämoglobin</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: var(--accent-magenta);">💪 Bewegung</td>
+                                        <td>Kontraktion</td>
+                                        <td class="table-mono" style="color: var(--text-muted);">Aktin, Myosin</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: var(--accent-blue);">🛡️ Abwehr</td>
+                                        <td>Immunsystem</td>
+                                        <td class="table-mono" style="color: var(--text-muted);">Antikörper</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: var(--accent-red);">📡 Signale</td>
+                                        <td>Hormone</td>
+                                        <td class="table-mono" style="color: var(--text-muted);">Insulin</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4.2 Aminosäuren -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">4.2</span>
+                    Aminosäuren – Die Bausteine
+                </h3>
+
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <h3>Allgemeiner Aufbau</h3>
+                    <p>Alle 20 proteinogenen Aminosäuren haben die gleiche Grundstruktur:</p>
+                    
+                    <div class="svg-container">
+                        <svg width="400" height="200" viewBox="0 0 400 200">
+                            <!-- Central structure -->
+                            <g transform="translate(200, 100)">
+                                <!-- Alpha Carbon -->
+                                <circle cx="0" cy="0" r="25" fill="var(--bg-card)" stroke="var(--accent-magenta)" stroke-width="3"/>
+                                <text x="0" y="5" text-anchor="middle" fill="var(--text-primary)" font-size="14" font-weight="bold">Cα</text>
+                                
+                                <!-- Amino group (left) -->
+                                <line x1="-25" y1="0" x2="-70" y2="0" stroke="var(--text-secondary)" stroke-width="3"/>
+                                <circle cx="-90" cy="0" r="22" fill="var(--accent-blue-dim)" stroke="var(--accent-blue)" stroke-width="2"/>
+                                <text x="-90" y="5" text-anchor="middle" fill="var(--accent-blue)" font-size="12" font-weight="bold">NH₂</text>
+                                <text x="-90" y="-35" text-anchor="middle" fill="var(--text-muted)" font-size="11">Aminogruppe</text>
+                                <text x="-90" y="-22" text-anchor="middle" fill="var(--accent-blue)" font-size="10">basisch</text>
+                                
+                                <!-- Carboxyl group (right) -->
+                                <line x1="25" y1="0" x2="70" y2="0" stroke="var(--text-secondary)" stroke-width="3"/>
+                                <g transform="translate(95, 0)">
+                                    <rect x="-25" y="-25" width="60" height="50" rx="8" fill="var(--accent-orange-dim)" stroke="var(--accent-orange)" stroke-width="2"/>
+                                    <text x="5" y="-5" text-anchor="middle" fill="var(--accent-orange)" font-size="11" font-weight="bold">C=O</text>
+                                    <text x="5" y="12" text-anchor="middle" fill="var(--accent-orange)" font-size="11" font-weight="bold">OH</text>
+                                </g>
+                                <text x="100" y="-40" text-anchor="middle" fill="var(--text-muted)" font-size="11">Carboxylgruppe</text>
+                                <text x="100" y="-27" text-anchor="middle" fill="var(--accent-orange)" font-size="10">sauer</text>
+                                
+                                <!-- H (top) -->
+                                <line x1="0" y1="-25" x2="0" y2="-55" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="0" y="-65" text-anchor="middle" fill="var(--text-muted)" font-size="14">H</text>
+                                
+                                <!-- R group (bottom) -->
+                                <line x1="0" y1="25" x2="0" y2="55" stroke="var(--text-secondary)" stroke-width="3"/>
+                                <circle cx="0" cy="75" r="22" fill="var(--accent-green-dim)" stroke="var(--accent-green)" stroke-width="2" stroke-dasharray="5,3">
+                                    <animate attributeName="stroke-dashoffset" values="0;16" dur="2s" repeatCount="indefinite"/>
+                                </circle>
+                                <text x="0" y="80" text-anchor="middle" fill="var(--accent-green)" font-size="16" font-weight="bold">R</text>
+                                <text x="50" y="80" text-anchor="start" fill="var(--text-muted)" font-size="11">← Rest (variabel)</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Zwitterion -->
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <h3>Zwitterion-Form</h3>
+                    <p>Bei physiologischem pH (~7) liegen Aminosäuren als <strong style="color: var(--accent-magenta);">Zwitterionen</strong> vor:</p>
+                    
+                    <div class="svg-container">
+                        <svg width="350" height="130" viewBox="0 0 350 130">
+                            <g transform="translate(175, 65)">
+                                <!-- Alpha Carbon -->
+                                <circle cx="0" cy="0" r="20" fill="var(--bg-card)" stroke="var(--accent-magenta)" stroke-width="2"/>
+                                <text x="0" y="5" text-anchor="middle" fill="var(--text-primary)" font-size="12" font-weight="bold">C</text>
+                                
+                                <!-- NH3+ (protonated) -->
+                                <line x1="-20" y1="0" x2="-55" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <circle cx="-75" cy="0" r="18" fill="var(--accent-blue-dim)" stroke="var(--accent-blue)" stroke-width="2"/>
+                                <text x="-75" y="5" text-anchor="middle" fill="var(--accent-blue)" font-size="11" font-weight="bold">NH₃⁺</text>
+                                
+                                <!-- COO- (deprotonated) -->
+                                <line x1="20" y1="0" x2="55" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <circle cx="-75" cy="0" r="18" fill="var(--accent-orange-dim)" stroke="var(--accent-orange)" stroke-width="2"/>
+                                <g transform="translate(78, 0)">
+                                    <rect x="-20" y="-18" width="45" height="36" rx="6" fill="var(--accent-orange-dim)" stroke="var(--accent-orange)" stroke-width="2"/>
+                                    <text x="2" y="5" text-anchor="middle" fill="var(--accent-orange)" font-size="11" font-weight="bold">COO⁻</text>
+                                </g>
+                                
+                                <!-- H -->
+                                <line x1="0" y1="-20" x2="0" y2="-40" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="0" y="-48" text-anchor="middle" fill="var(--text-muted)" font-size="12">H</text>
+                                
+                                <!-- R -->
+                                <line x1="0" y1="20" x2="0" y2="40" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="0" y="55" text-anchor="middle" fill="var(--accent-green)" font-size="14" font-weight="bold">R</text>
+                            </g>
+                            
+                            <text x="175" y="115" text-anchor="middle" fill="var(--text-muted)" font-size="11">Keine Nettoladung, aber lokale Ladungen</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Aminosäuren Klassifikation -->
+                <div class="content-grid">
+                    <div class="card">
+                        <h3>
+                            Unpolar (hydrophob)
+                            <span class="card-badge" style="background: var(--bg-tertiary); color: var(--text-muted);">9 AS</span>
+                        </h3>
+                        <div class="table-wrapper">
+                            <table style="font-size: 0.85rem;">
+                                <thead><tr><th>Name</th><th>Abk.</th><th>Rest R</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Glycin</td><td class="table-mono">Gly (G)</td><td class="table-mono">-H</td></tr>
+                                    <tr><td>Alanin</td><td class="table-mono">Ala (A)</td><td class="table-mono">-CH₃</td></tr>
+                                    <tr><td>Valin</td><td class="table-mono">Val (V)</td><td class="table-mono">-CH(CH₃)₂</td></tr>
+                                    <tr><td>Leucin</td><td class="table-mono">Leu (L)</td><td class="table-mono">verzweigt</td></tr>
+                                    <tr><td>Phenylalanin</td><td class="table-mono">Phe (F)</td><td class="table-mono">-CH₂-⌬</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>
+                            Polar (ungeladen)
+                            <span class="card-badge" style="background: var(--accent-cyan-dim); color: var(--accent-cyan);">6 AS</span>
+                        </h3>
+                        <div class="table-wrapper">
+                            <table style="font-size: 0.85rem;">
+                                <thead><tr><th>Name</th><th>Abk.</th><th>Rest R</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Serin</td><td class="table-mono">Ser (S)</td><td class="table-mono">-CH₂-OH</td></tr>
+                                    <tr><td>Threonin</td><td class="table-mono">Thr (T)</td><td class="table-mono">-CH(OH)-CH₃</td></tr>
+                                    <tr><td>Cystein</td><td class="table-mono">Cys (C)</td><td class="table-mono">-CH₂-SH</td></tr>
+                                    <tr><td>Asparagin</td><td class="table-mono">Asn (N)</td><td class="table-mono">-CH₂-CONH₂</td></tr>
+                                    <tr><td>Tyrosin</td><td class="table-mono">Tyr (Y)</td><td class="table-mono">-CH₂-⌬-OH</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>
+                            Sauer (neg. geladen)
+                            <span class="card-badge" style="background: var(--accent-red-dim); color: var(--accent-red);">2 AS</span>
+                        </h3>
+                        <div class="table-wrapper">
+                            <table style="font-size: 0.85rem;">
+                                <thead><tr><th>Name</th><th>Abk.</th><th>Rest R</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Asparaginsäure</td><td class="table-mono">Asp (D)</td><td class="table-mono">-CH₂-COO⁻</td></tr>
+                                    <tr><td>Glutaminsäure</td><td class="table-mono">Glu (E)</td><td class="table-mono">-CH₂-CH₂-COO⁻</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>
+                            Basisch (pos. geladen)
+                            <span class="card-badge" style="background: var(--accent-blue-dim); color: var(--accent-blue);">3 AS</span>
+                        </h3>
+                        <div class="table-wrapper">
+                            <table style="font-size: 0.85rem;">
+                                <thead><tr><th>Name</th><th>Abk.</th><th>Rest R</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Lysin</td><td class="table-mono">Lys (K)</td><td class="table-mono">-(CH₂)₄-NH₃⁺</td></tr>
+                                    <tr><td>Arginin</td><td class="table-mono">Arg (R)</td><td class="table-mono">Guanidinium</td></tr>
+                                    <tr><td>Histidin</td><td class="table-mono">His (H)</td><td class="table-mono">Imidazol</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Essentielle AS -->
+                <div class="info-box tip" style="margin-top: 1.5rem;">
+                    <div class="info-box-title">💡 Essentielle Aminosäuren (8)</div>
+                    <p>Der Mensch kann diese nicht selbst herstellen – müssen mit der Nahrung aufgenommen werden:</p>
+                    <p style="margin-top: 0.5rem; font-family: var(--font-mono); color: var(--accent-magenta);">
+                        <strong>P</strong>he · <strong>I</strong>le · <strong>L</strong>eu · <strong>L</strong>ys · <strong>M</strong>et · <strong>V</strong>al · <strong>T</strong>hr · <strong>T</strong>rp
+                    </p>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                        Merksatz: "<strong>P</strong>hänomenale <strong>I</strong>rene <strong>l</strong>iebt <strong>l</strong>eckere <strong>M</strong>ettwurst <strong>v</strong>on <strong>Th</strong>omas <strong>Try</strong>stan"
+                    </p>
+                </div>
+            </div>
+
+            <!-- 4.3 Peptidbindung -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">4.3</span>
+                    Peptidbindung
+                </h3>
+
+                <div class="card" style="margin-bottom: 1.5rem;">
+                    <h3>Bildung der Peptidbindung (Kondensation)</h3>
+                    <p>Zwei Aminosäuren reagieren unter <strong style="color: var(--accent-cyan);">Wasserabspaltung</strong> zu einem Dipeptid:</p>
+                    
+                    <div class="svg-container" style="padding: 2rem;">
+                        <svg width="600" height="200" viewBox="0 0 600 200">
+                            <!-- Aminosäure 1 -->
+                            <g transform="translate(50, 80)">
+                                <text x="50" y="-40" text-anchor="middle" fill="var(--text-muted)" font-size="11">Aminosäure 1</text>
+                                
+                                <!-- NH2 -->
+                                <text x="0" y="5" fill="var(--accent-blue)" font-size="12" font-weight="bold">H₂N</text>
+                                <line x1="25" y1="0" x2="45" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                
+                                <!-- C-alpha -->
+                                <circle cx="55" cy="0" r="12" fill="var(--bg-card)" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="55" y="4" text-anchor="middle" fill="var(--text-primary)" font-size="10">C</text>
+                                <line x1="55" y1="12" x2="55" y2="30" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="55" y="45" text-anchor="middle" fill="var(--accent-green)" font-size="11">R₁</text>
+                                
+                                <!-- COOH -->
+                                <line x1="67" y1="0" x2="85" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <g id="coohGroup1">
+                                    <text x="92" y="4" fill="var(--text-primary)" font-size="12" font-weight="bold">C</text>
+                                    <line x1="98" y1="-8" x2="98" y2="-20" stroke="var(--accent-red)" stroke-width="2"/>
+                                    <line x1="102" y1="-8" x2="102" y2="-20" stroke="var(--accent-red)" stroke-width="2"/>
+                                    <text x="100" y="-28" text-anchor="middle" fill="var(--accent-red)" font-size="11">O</text>
+                                    <line x1="105" y1="0" x2="125" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                    <g id="ohLeaving1">
+                                        <text x="130" y="4" fill="var(--accent-red)" font-size="12" font-weight="bold">OH</text>
+                                        <animate attributeName="opacity" values="1;1;0.3" dur="4s" repeatCount="indefinite"/>
+                                    </g>
+                                </g>
+                            </g>
+                            
+                            <!-- Plus -->
+                            <text x="220" y="85" fill="var(--text-muted)" font-size="20">+</text>
+                            
+                            <!-- Aminosäure 2 -->
+                            <g transform="translate(250, 80)">
+                                <text x="55" y="-40" text-anchor="middle" fill="var(--text-muted)" font-size="11">Aminosäure 2</text>
+                                
+                                <!-- H-N -->
+                                <g id="hLeaving2">
+                                    <text x="0" y="5" fill="var(--accent-cyan)" font-size="12" font-weight="bold">H</text>
+                                    <animate attributeName="opacity" values="1;1;0.3" dur="4s" repeatCount="indefinite"/>
+                                </g>
+                                <line x1="12" y1="0" x2="25" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="35" y="5" fill="var(--accent-blue)" font-size="12" font-weight="bold">N</text>
+                                <line x1="35" y1="-8" x2="35" y2="-20" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="35" y="-28" text-anchor="middle" fill="var(--text-muted)" font-size="10">H</text>
+                                
+                                <line x1="45" y1="0" x2="60" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                
+                                <!-- C-alpha -->
+                                <circle cx="72" cy="0" r="12" fill="var(--bg-card)" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="72" y="4" text-anchor="middle" fill="var(--text-primary)" font-size="10">C</text>
+                                <line x1="72" y1="12" x2="72" y2="30" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="72" y="45" text-anchor="middle" fill="var(--accent-green)" font-size="11">R₂</text>
+                                
+                                <!-- COOH -->
+                                <line x1="84" y1="0" x2="100" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="107" y="4" fill="var(--text-primary)" font-size="12" font-weight="bold">C</text>
+                                <line x1="113" y1="-8" x2="113" y2="-20" stroke="var(--accent-red)" stroke-width="2"/>
+                                <line x1="117" y1="-8" x2="117" y2="-20" stroke="var(--accent-red)" stroke-width="2"/>
+                                <text x="115" y="-28" text-anchor="middle" fill="var(--accent-red)" font-size="11">O</text>
+                                <line x1="120" y1="0" x2="140" y2="0" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="150" y="4" fill="var(--accent-red)" font-size="12" font-weight="bold">OH</text>
+                            </g>
+                            
+                            <!-- Arrow -->
+                            <g transform="translate(430, 70)">
+                                <line x1="0" y1="10" x2="35" y2="10" stroke="var(--accent-magenta)" stroke-width="3"/>
+                                <polygon points="35,10 25,5 25,15" fill="var(--accent-magenta)"/>
+                                <text x="18" y="30" text-anchor="middle" fill="var(--text-muted)" font-size="10">-H₂O</text>
+                            </g>
+                            
+                            <!-- Water formation indicator -->
+                            <g transform="translate(170, 130)" opacity="0">
+                                <circle cx="0" cy="0" r="15" fill="var(--accent-blue-dim)" stroke="var(--accent-blue)" stroke-width="2"/>
+                                <text x="0" y="5" text-anchor="middle" fill="var(--accent-blue)" font-size="10" font-weight="bold">H₂O</text>
+                                <animate attributeName="opacity" values="0;0;1" dur="4s" repeatCount="indefinite"/>
+                                <animateTransform attributeName="transform" type="translate" values="0,0; 0,30" dur="4s" repeatCount="indefinite"/>
+                            </g>
+                            
+                            <!-- Dipeptid (Product) - simplified -->
+                            <g transform="translate(480, 80)" opacity="0">
+                                <text x="60" y="-40" text-anchor="middle" fill="var(--accent-magenta)" font-size="11" font-weight="bold">Dipeptid</text>
+                                
+                                <text x="0" y="5" fill="var(--accent-blue)" font-size="11">H₂N-</text>
+                                <text x="25" y="5" fill="var(--text-muted)" font-size="11">...</text>
+                                
+                                <!-- Peptide bond highlighted -->
+                                <rect x="38" y="-12" width="45" height="28" rx="4" fill="var(--accent-magenta-dim)" stroke="var(--accent-magenta)" stroke-width="2"/>
+                                <text x="60" y="5" text-anchor="middle" fill="var(--accent-magenta)" font-size="11" font-weight="bold">CO-NH</text>
+                                
+                                <text x="88" y="5" fill="var(--text-muted)" font-size="11">...</text>
+                                <text x="108" y="5" fill="var(--accent-orange)" font-size="11">-COOH</text>
+                                
+                                <animate attributeName="opacity" values="0;0;1" dur="4s" repeatCount="indefinite"/>
+                            </g>
+                        </svg>
+                    </div>
+                    
+                    <div class="formula-box" style="text-align: center;">
+                        <span style="font-size: 1.1rem;">AS₁ + AS₂ → <span style="color: var(--accent-magenta);">Dipeptid</span> + H₂O</span>
+                    </div>
+                </div>
+
+                <!-- Peptidbindung Eigenschaften -->
+                <div class="card">
+                    <h3>Eigenschaften der Peptidbindung</h3>
+                    
+                    <div class="svg-container">
+                        <svg width="300" height="120" viewBox="0 0 300 120">
+                            <g transform="translate(150, 60)">
+                                <!-- Peptide bond structure -->
+                                <text x="-80" y="5" fill="var(--text-muted)" font-size="14">—C</text>
+                                
+                                <!-- C=O -->
+                                <circle cx="-40" cy="0" r="16" fill="var(--bg-card)" stroke="var(--accent-magenta)" stroke-width="2"/>
+                                <text x="-40" y="5" text-anchor="middle" fill="var(--text-primary)" font-size="12" font-weight="bold">C</text>
+                                <line x1="-40" y1="-16" x2="-40" y2="-40" stroke="var(--accent-red)" stroke-width="2"/>
+                                <line x1="-35" y1="-16" x2="-35" y2="-40" stroke="var(--accent-red)" stroke-width="2"/>
+                                <text x="-37" y="-48" text-anchor="middle" fill="var(--accent-red)" font-size="14" font-weight="bold">O</text>
+                                
+                                <!-- Peptide bond line (partial double bond character) -->
+                                <line x1="-24" y1="0" x2="24" y2="0" stroke="var(--accent-magenta)" stroke-width="3"/>
+                                <line x1="-20" y1="5" x2="20" y2="5" stroke="var(--accent-magenta)" stroke-width="1" stroke-dasharray="4,2" opacity="0.5"/>
+                                
+                                <!-- N-H -->
+                                <circle cx="40" cy="0" r="16" fill="var(--bg-card)" stroke="var(--accent-blue)" stroke-width="2"/>
+                                <text x="40" y="5" text-anchor="middle" fill="var(--accent-blue)" font-size="12" font-weight="bold">N</text>
+                                <line x1="40" y1="16" x2="40" y2="40" stroke="var(--text-secondary)" stroke-width="2"/>
+                                <text x="40" y="55" text-anchor="middle" fill="var(--text-muted)" font-size="14">H</text>
+                                
+                                <text x="80" y="5" fill="var(--text-muted)" font-size="14">C—</text>
+                                
+                                <!-- Planar indicator -->
+                                <rect x="-60" y="-10" width="120" height="20" fill="none" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="3,3" rx="4"/>
+                            </g>
+                            
+                            <text x="150" y="105" text-anchor="middle" fill="var(--accent-cyan)" font-size="11">Planar (keine freie Drehbarkeit)</text>
+                        </svg>
+                    </div>
+                    
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem; color: var(--text-secondary);">
+                        <li><strong style="color: var(--accent-magenta);">Planar:</strong> Partieller Doppelbindungscharakter durch Mesomerie</li>
+                        <li><strong style="color: var(--accent-cyan);">trans-Konfiguration:</strong> R-Gruppen auf gegenüberliegenden Seiten</li>
+                        <li><strong>Stabil:</strong> Energieaufwand zur Spaltung nötig</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 4.4 Proteinstrukturen -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">4.4</span>
+                    Proteinstrukturen
+                </h3>
+
+                <div class="content-grid">
+                    <!-- Primärstruktur -->
+                    <div class="card">
+                        <h3>
+                            1° Primärstruktur
+                            <span class="card-badge" style="background: var(--accent-green-dim); color: var(--accent-green);">Sequenz</span>
+                        </h3>
+                        <p>Die <strong>Aminosäuresequenz</strong> – lineare Abfolge der AS</p>
+                        
+                        <div class="svg-container" style="padding: 1rem;">
+                            <svg width="200" height="60" viewBox="0 0 200 60">
+                                <text x="10" y="25" fill="var(--accent-blue)" font-size="10">N</text>
+                                <line x1="20" y1="20" x2="180" y2="20" stroke="var(--accent-green)" stroke-width="3"/>
+                                <!-- AA circles -->
+                                <circle cx="40" cy="20" r="10" fill="var(--accent-cyan)"/><text x="40" y="24" text-anchor="middle" fill="white" font-size="8">A</text>
+                                <circle cx="70" cy="20" r="10" fill="var(--accent-orange)"/><text x="70" y="24" text-anchor="middle" fill="white" font-size="8">G</text>
+                                <circle cx="100" cy="20" r="10" fill="var(--accent-magenta)"/><text x="100" y="24" text-anchor="middle" fill="white" font-size="8">P</text>
+                                <circle cx="130" cy="20" r="10" fill="var(--accent-green)"/><text x="130" y="24" text-anchor="middle" fill="white" font-size="8">L</text>
+                                <circle cx="160" cy="20" r="10" fill="var(--accent-red)"/><text x="160" y="24" text-anchor="middle" fill="white" font-size="8">V</text>
+                                <text x="185" y="25" fill="var(--accent-orange)" font-size="10">C</text>
+                                <text x="100" y="50" text-anchor="middle" fill="var(--text-muted)" font-size="10">Ala-Gly-Pro-Leu-Val</text>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Durch DNA festgelegt, bestimmt alle höheren Strukturen</p>
+                    </div>
+
+                    <!-- Sekundärstruktur -->
+                    <div class="card">
+                        <h3>
+                            2° Sekundärstruktur
+                            <span class="card-badge" style="background: var(--accent-cyan-dim); color: var(--accent-cyan);">Faltung</span>
+                        </h3>
+                        <p>Lokale räumliche Muster durch <strong>H-Brücken</strong></p>
+                        
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                            <div style="flex: 1; text-align: center;">
+                                <div class="svg-container" style="padding: 0.5rem;">
+                                    <svg width="60" height="80" viewBox="0 0 60 80">
+                                        <!-- α-Helix -->
+                                        <path d="M30,10 Q45,20 30,30 Q15,40 30,50 Q45,60 30,70" 
+                                              fill="none" stroke="var(--accent-cyan)" stroke-width="4" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                                <p style="font-size: 0.85rem; color: var(--accent-cyan);">α-Helix</p>
+                            </div>
+                            <div style="flex: 1; text-align: center;">
+                                <div class="svg-container" style="padding: 0.5rem;">
+                                    <svg width="80" height="80" viewBox="0 0 80 80">
+                                        <!-- β-Faltblatt -->
+                                        <line x1="10" y1="20" x2="70" y2="20" stroke="var(--accent-orange)" stroke-width="4"/>
+                                        <line x1="10" y1="40" x2="70" y2="40" stroke="var(--accent-orange)" stroke-width="4"/>
+                                        <line x1="10" y1="60" x2="70" y2="60" stroke="var(--accent-orange)" stroke-width="4"/>
+                                        <!-- H-bonds -->
+                                        <line x1="30" y1="22" x2="30" y2="38" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="3,2"/>
+                                        <line x1="50" y1="42" x2="50" y2="58" stroke="var(--accent-cyan)" stroke-width="1" stroke-dasharray="3,2"/>
+                                    </svg>
+                                </div>
+                                <p style="font-size: 0.85rem; color: var(--accent-orange);">β-Faltblatt</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tertiärstruktur -->
+                    <div class="card">
+                        <h3>
+                            3° Tertiärstruktur
+                            <span class="card-badge" style="background: var(--accent-magenta-dim); color: var(--accent-magenta);">3D</span>
+                        </h3>
+                        <p>Räumliche <strong>Gesamtstruktur</strong> eines Polypeptids</p>
+                        
+                        <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted);">Stabilisiert durch:</p>
+                        <ul style="padding-left: 1.2rem; font-size: 0.85rem; color: var(--text-secondary);">
+                            <li><span style="color: var(--accent-orange);">Disulfidbrücken</span> (S-S)</li>
+                            <li>Ionenbindungen</li>
+                            <li>Wasserstoffbrücken</li>
+                            <li>Hydrophobe WW</li>
+                        </ul>
+                        
+                        <div class="formula-box" style="font-size: 0.85rem; padding: 0.5rem; margin-top: 0.5rem;">
+                            2 Cys-SH → Cys-<span style="color: var(--accent-orange);">S-S</span>-Cys + 2H
+                        </div>
+                    </div>
+
+                    <!-- Quartärstruktur -->
+                    <div class="card">
+                        <h3>
+                            4° Quartärstruktur
+                            <span class="card-badge" style="background: var(--accent-red-dim); color: var(--accent-red);">Komplex</span>
+                        </h3>
+                        <p>Zusammenlagerung mehrerer <strong>Untereinheiten</strong></p>
+                        
+                        <div class="svg-container" style="padding: 1rem;">
+                            <svg width="120" height="80" viewBox="0 0 120 80">
+                                <!-- 4 subunits like hemoglobin -->
+                                <circle cx="40" cy="30" r="18" fill="var(--accent-cyan-dim)" stroke="var(--accent-cyan)" stroke-width="2"/>
+                                <text x="40" y="34" text-anchor="middle" fill="var(--accent-cyan)" font-size="10">α</text>
+                                <circle cx="80" cy="30" r="18" fill="var(--accent-cyan-dim)" stroke="var(--accent-cyan)" stroke-width="2"/>
+                                <text x="80" y="34" text-anchor="middle" fill="var(--accent-cyan)" font-size="10">α</text>
+                                <circle cx="40" cy="55" r="18" fill="var(--accent-magenta-dim)" stroke="var(--accent-magenta)" stroke-width="2"/>
+                                <text x="40" y="59" text-anchor="middle" fill="var(--accent-magenta)" font-size="10">β</text>
+                                <circle cx="80" cy="55" r="18" fill="var(--accent-magenta-dim)" stroke="var(--accent-magenta)" stroke-width="2"/>
+                                <text x="80" y="59" text-anchor="middle" fill="var(--accent-magenta)" font-size="10">β</text>
+                            </svg>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center;">Hämoglobin: 2α + 2β</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4.5 Denaturierung -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">4.5</span>
+                    Denaturierung
+                </h3>
+
+                <div class="card">
+                    <h3>Was ist Denaturierung?</h3>
+                    <p style="font-size: 1.05rem;">
+                        <strong style="color: var(--accent-red);">Zerstörung der räumlichen Struktur</strong> (2°-4°) 
+                        <em>ohne</em> Spaltung der Peptidbindungen.
+                    </p>
+                    
+                    <div class="table-wrapper" style="margin-top: 1.5rem;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ursache</th>
+                                    <th>Beispiel</th>
+                                    <th>Mechanismus</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="color: var(--accent-red);">🔥 Hitze</td>
+                                    <td>Kochen eines Eis</td>
+                                    <td>H-Brücken werden gebrochen</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: var(--accent-orange);">🧪 Säure/Base</td>
+                                    <td>Magensäure</td>
+                                    <td>Ionenbindungen gestört</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: var(--accent-cyan);">🍸 Organische LM</td>
+                                    <td>Alkohol</td>
+                                    <td>Hydrophobe WW gestört</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: var(--accent-blue);">⚙️ Mechanisch</td>
+                                    <td>Eischnee schlagen</td>
+                                    <td>Lufteinschluss</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="info-box warning" style="margin-top: 1rem;">
+                        <div class="info-box-title">⚠️ Folgen der Denaturierung</div>
+                        <p>• Verlust der biologischen Funktion<br>
+                        • Oft <strong>irreversibel</strong><br>
+                        • Änderung der Löslichkeit (Ausfällung)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4.6 Nachweisreaktionen -->
+            <div class="subsection animate-on-scroll">
+                <h3 class="subsection-title">
+                    <span class="subsection-number">4.6</span>
+                    Nachweisreaktionen für Proteine
+                </h3>
+
+                <div class="content-grid">
+                    <!-- Biuret -->
+                    <div class="card">
+                        <h3>🔬 Biuret-Reaktion</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Nachweis für <strong>Peptidbindungen</strong></p>
+                        
+                        <p style="margin: 1rem 0;"><strong>Reagenz:</strong> NaOH + CuSO₄ (verdünnt)</p>
+                        
+                        <div class="svg-container" style="padding: 1rem;">
+                            <svg width="150" height="80" viewBox="0 0 150 80">
+                                <rect x="20" y="10" width="40" height="50" rx="0 0 20 20" fill="none" stroke="var(--text-muted)" stroke-width="2"/>
+                                <rect x="22" y="25" width="36" height="33" rx="0 0 18 18" fill="#3b82f6"/>
+                                <text x="40" y="70" text-anchor="middle" fill="var(--text-muted)" font-size="9">Cu²⁺</text>
+                                
+                                <text x="75" y="40" fill="var(--accent-magenta)" font-size="16">→</text>
+                                
+                                <rect x="90" y="10" width="40" height="50" rx="0 0 20 20" fill="none" stroke="var(--text-muted)" stroke-width="2"/>
+                                <rect x="92" y="25" width="36" height="33" rx="0 0 18 18" fill="#8b5cf6"/>
+                                <text x="110" y="70" text-anchor="middle" fill="var(--accent-green)" font-size="9">Violett!</text>
+                            </svg>
+                        </div>
+                        
+                        <p style="font-size: 0.9rem;"><strong style="color: var(--accent-green);">Positiv:</strong> Violette Färbung</p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">Bedingung: ≥2 Peptidbindungen (ab Tripeptid)</p>
+                    </div>
+
+                    <!-- Ninhydrin -->
+                    <div class="card">
+                        <h3>🔬 Ninhydrin-Reaktion</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Nachweis für <strong>α-Aminosäuren</strong></p>
+                        
+                        <p style="margin: 1rem 0;"><strong>Reagenz:</strong> Ninhydrin-Lösung + Erhitzen</p>
+                        
+                        <p style="font-size: 0.9rem;"><strong style="color: var(--accent-blue);">Positiv:</strong> Blau-violette Färbung</p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">(Prolin → gelb)</p>
+                        
+                        <div class="info-box tip" style="margin-top: 1rem; padding: 0.8rem;">
+                            <p style="font-size: 0.85rem; margin: 0;">Anwendung: <strong>Fingerabdrucknachweis</strong> (Schweiß enthält AS)</p>
+                        </div>
+                    </div>
+
+                    <!-- Xanthoprotein -->
+                    <div class="card">
+                        <h3>🔬 Xanthoprotein-Reaktion</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Nachweis für <strong>aromatische AS</strong></p>
+                        
+                        <p style="margin: 1rem 0;"><strong>Reagenz:</strong> konz. HNO₃ + Erwärmen</p>
+                        
+                        <p style="font-size: 0.9rem;"><strong style="color: #eab308;">Positiv:</strong> Gelbe Färbung</p>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">Mit NH₃/NaOH → <span style="color: var(--accent-orange);">Orange</span></p>
+                        
+                        <p style="margin-top: 0.5rem; font-size: 0.85rem;">Nachweis für: <span style="color: var(--accent-magenta);">Tyr, Trp, Phe</span></p>
+                    </div>
+
+                    <!-- Schwefelprobe -->
+                    <div class="card">
+                        <h3>🔬 Schwefelnachweis</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Nachweis für <strong>Cystein/Methionin</strong></p>
+                        
+                        <p style="margin: 1rem 0;"><strong>Reagenz:</strong> NaOH (kochen) + Bleiacetat</p>
+                        
+                        <p style="font-size: 0.9rem;"><strong style="color: var(--text-primary);">Positiv:</strong> <span style="background: #1a1a1a; padding: 0.2rem 0.5rem; border-radius: 4px;">Schwarzer Niederschlag</span></p>
+                        
+                        <div class="formula-box" style="font-size: 0.8rem; padding: 0.5rem; margin-top: 0.5rem;">
+                            S²⁻ + Pb²⁺ → <span style="color: var(--text-muted);">PbS↓</span> (schwarz)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Zusammenfassung Section -->
+        <section id="zusammenfassung" style="border-bottom: none;">
+            <div class="section-header animate-on-scroll">
+                <div class="section-icon" style="background: var(--accent-blue-dim);">📋</div>
+                <div class="section-title-group">
+                    <h2 style="color: var(--accent-blue);">Zusammenfassung</h2>
+                    <p>Übersicht aller Nachweisreaktionen</p>
+                </div>
+            </div>
+
+            <div class="card animate-on-scroll">
+                <h3>Nachweisreaktionen auf einen Blick</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Stoffgruppe</th>
+                                <th>Nachweis</th>
+                                <th>Reagenz</th>
+                                <th>Beobachtung (positiv)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="2" style="color: var(--accent-orange); font-weight: 600;">Fette</td>
+                                <td>Fettfleckprobe</td>
+                                <td>—</td>
+                                <td>Durchscheinender Fleck</td>
+                            </tr>
+                            <tr>
+                                <td>Sudanrot</td>
+                                <td>Sudanrot III/IV</td>
+                                <td style="color: var(--accent-red);">Rot/Orange-Färbung</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="4" style="color: var(--accent-cyan); font-weight: 600;">Kohlenhydrate</td>
+                                <td>Fehling</td>
+                                <td>Cu²⁺/OH⁻/Tartrat</td>
+                                <td style="color: #dc2626;">Ziegelroter Niederschlag</td>
+                            </tr>
+                            <tr>
+                                <td>Tollens</td>
+                                <td>[Ag(NH₃)₂]⁺</td>
+                                <td style="color: #c0c0c0;">Silberspiegel</td>
+                            </tr>
+                            <tr>
+                                <td>Iod-Probe</td>
+                                <td>I₂/KI (Lugol)</td>
+                                <td style="color: #1e40af;">Blau-schwarz (Stärke)</td>
+                            </tr>
+                            <tr>
+                                <td>Seliwanoff</td>
+                                <td>Resorcin/HCl</td>
+                                <td style="color: var(--accent-red);">Rot (Ketosen)</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="4" style="color: var(--accent-magenta); font-weight: 600;">Proteine</td>
+                                <td>Biuret</td>
+                                <td>Cu²⁺/OH⁻</td>
+                                <td style="color: #8b5cf6;">Violett</td>
+                            </tr>
+                            <tr>
+                                <td>Ninhydrin</td>
+                                <td>Ninhydrin</td>
+                                <td style="color: #6366f1;">Blau-violett</td>
+                            </tr>
+                            <tr>
+                                <td>Xanthoprotein</td>
+                                <td>konz. HNO₃</td>
+                                <td style="color: #eab308;">Gelb → Orange (Base)</td>
+                            </tr>
+                            <tr>
+                                <td>Schwefelprobe</td>
+                                <td>NaOH + Pb²⁺</td>
+                                <td>Schwarzer Niederschlag (PbS)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Quick Reference Cards -->
+            <div class="content-grid animate-on-scroll" style="margin-top: 2rem;">
+                <div class="card" style="border-left: 4px solid var(--accent-orange);">
+                    <h3 style="color: var(--accent-orange);">🧈 Fette</h3>
+                    <ul style="padding-left: 1.2rem; font-size: 0.9rem; color: var(--text-secondary);">
+                        <li>Glycerin + 3 Fettsäuren</li>
+                        <li>Esterbindung (Kondensation)</li>
+                        <li>Verseifung → Seife + Glycerin</li>
+                    </ul>
+                </div>
+                
+                <div class="card" style="border-left: 4px solid var(--accent-cyan);">
+                    <h3 style="color: var(--accent-cyan);">🍬 Kohlenhydrate</h3>
+                    <ul style="padding-left: 1.2rem; font-size: 0.9rem; color: var(--text-secondary);">
+                        <li>Mono-, Di-, Polysaccharide</li>
+                        <li>Glykosidische Bindung</li>
+                        <li>α vs β-Konfiguration wichtig!</li>
+                    </ul>
+                </div>
+                
+                <div class="card" style="border-left: 4px solid var(--accent-magenta);">
+                    <h3 style="color: var(--accent-magenta);">🧬 Proteine</h3>
+                    <ul style="padding-left: 1.2rem; font-size: 0.9rem; color: var(--text-secondary);">
+                        <li>20 Aminosäuren</li>
+                        <li>Peptidbindung (C-N)</li>
+                        <li>4 Strukturebenen</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 3rem; color: var(--text-muted); border-top: 1px solid var(--border-color);">
+        <p>Biochemie Stoffsammlung · Sekundarstufe II</p>
+    </footer>
+
+    <!-- Scroll Animation Script -->
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
